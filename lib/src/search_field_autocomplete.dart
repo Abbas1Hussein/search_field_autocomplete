@@ -10,13 +10,10 @@ import 'common/extensions/on_list.dart';
 import 'common/model/search_field_Item.dart';
 import 'common/model/suggestion_decoration.dart';
 
-/// A widget that displays a searchfield and a list of suggestions
-/// when the searchfield is brought into focus
-/// see [example/lib/country_search.dart]
-///
+/// This flag checks if the current platform is iOS.
+final bool _isIos = defaultTargetPlatform != TargetPlatform.iOS;
 
-final bool _isIos = defaultTargetPlatform == TargetPlatform.iOS;
-
+/// A widget that displays a [SearchFieldAutoComplete] and a list of suggestions
 class SearchFieldAutoComplete<T> extends StatefulWidget {
   final FocusNode? focusNode;
 
@@ -255,8 +252,7 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
       _SearchFieldAutoCompleteState();
 }
 
-class _SearchFieldAutoCompleteState<T>
-    extends State<SearchFieldAutoComplete<T>> {
+class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> {
   final StreamController<List<SearchFieldItem<T>?>?> suggestionStream =
       StreamController<List<SearchFieldItem<T>?>?>.broadcast();
 
@@ -355,7 +351,7 @@ class _SearchFieldAutoCompleteState<T>
           } else {
             _totalHeight = snapshot.data!.length * widget.itemHeight;
           }
-          final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
+          //  final onSurfaceColor = Theme.of(context).colorScheme.onSurface;
 
           final Widget listView = ListView.builder(
             reverse: widget.suggestionDirection == SuggestionDirection.up,
@@ -365,61 +361,59 @@ class _SearchFieldAutoCompleteState<T>
             physics: snapshot.data!.length == 1
                 ? const NeverScrollableScrollPhysics()
                 : const ScrollPhysics(),
-            itemBuilder: (context, index) => TextFieldTapRegion(
-              child: GestureDetector(
-                onTap: () {
-                  searchController!.text = snapshot.data![index]!.searchKey;
-                  searchController!.selection = TextSelection.fromPosition(
-                    TextPosition(offset: searchController!.text.length),
-                  );
+            itemBuilder: (context, index) {
+              return TextFieldTapRegion(
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8.0),
+                  splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
+                  mouseCursor: SystemMouseCursors.click,
+                  onTap: () {
+                    searchController!.text = snapshot.data![index]!.searchKey;
+                    searchController!.selection = TextSelection.fromPosition(
+                      TextPosition(offset: searchController!.text.length),
+                    );
 
-                  // suggestion action to switch focus to next focus node
-                  if (widget.suggestionAction != null) {
-                    if (widget.suggestionAction == SuggestionAction.next) {
-                      _focus!.nextFocus();
-                    } else if (widget.suggestionAction ==
-                        SuggestionAction.unfocus) {
-                      _focus!.unfocus();
+                    // suggestion action to switch focus to next focus node
+                    if (widget.suggestionAction != null) {
+                      if (widget.suggestionAction == SuggestionAction.next) {
+                        _focus!.nextFocus();
+                      } else if (widget.suggestionAction ==
+                          SuggestionAction.unfocus) {
+                        _focus!.unfocus();
+                      }
                     }
-                  }
 
-                  // hide the suggestions
-                  suggestionStream.sink.add(null);
-                  if (widget.onSuggestionTap != null) {
-                    widget.onSuggestionTap!(snapshot.data![index]!);
-                  }
-                },
-                child: Container(
-                  height: widget.itemHeight,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  decoration: widget.suggestionItemDecoration?.copyWith(
-                        border: widget.suggestionItemDecoration?.border ??
-                            Border(
-                              bottom: BorderSide(
-                                color: widget.marginColor ??
-                                    onSurfaceColor.withOpacity(0.1),
-                              ),
+                    // hide the suggestions
+                    suggestionStream.sink.add(null);
+                    if (widget.onSuggestionTap != null) {
+                      widget.onSuggestionTap!(snapshot.data![index]!);
+                    }
+                  },
+                  child: Container(
+                    height: widget.itemHeight,
+                    width: double.infinity,
+                    alignment: Alignment.centerLeft,
+                    decoration: widget.suggestionItemDecoration,
+                    child: snapshot.data![index]!.child ??
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: Text(
+                              snapshot.data![index]!.searchKey,
+                              style: widget.suggestionStyle ??
+                                  (_isIos
+                                      ? CupertinoTheme.of(context)
+                                          .textTheme
+                                          .textStyle
+                                      : Theme.of(context).textTheme.bodySmall),
                             ),
-                      ) ??
-                      BoxDecoration(
-                        border: index == snapshot.data!.length - 1
-                            ? null
-                            : Border(
-                                bottom: BorderSide(
-                                  color: widget.marginColor ??
-                                      onSurfaceColor.withOpacity(0.1),
-                                ),
-                              ),
-                      ),
-                  child: snapshot.data![index]!.child ??
-                      Text(
-                        snapshot.data![index]!.searchKey,
-                        style: widget.suggestionStyle,
-                      ),
+                          ),
+                        ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
 
           return AnimatedContainer(
@@ -428,20 +422,7 @@ class _SearchFieldAutoCompleteState<T>
                 : const Duration(milliseconds: 300),
             height: _totalHeight,
             alignment: Alignment.centerLeft,
-            decoration: widget.suggestionsDecoration ??
-                BoxDecoration(
-                  color: _isIos
-                      ? CupertinoTheme.of(context).primaryColor
-                      : Theme.of(context).primaryColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: onSurfaceColor.withOpacity(0.1),
-                      blurRadius: 8.0,
-                      spreadRadius: 2.0,
-                      offset: const Offset(2.0, 5.0),
-                    ),
-                  ],
-                ),
+            decoration: widget.suggestionsDecoration,
             child: RawScrollbar(
               thumbVisibility: widget.scrollbarAlwaysVisible,
               controller: _scrollController,
@@ -455,7 +436,7 @@ class _SearchFieldAutoCompleteState<T>
   }
 
   /// Decides whether to show the suggestions
-  /// on top or bottom of Searchfield
+  /// on top or bottom of [SearchFieldAutoComplete]
   /// User can have more control by manually specifying the offset
   Offset? getYOffset(
       Offset textFieldOffset, Size textFieldSize, int suggestionsCount) {
@@ -518,7 +499,11 @@ class _SearchFieldAutoCompleteState<T>
             child: CompositedTransformFollower(
               offset: widget.offset ?? yOffset,
               link: _layerLink,
-              child: Card(child: _suggestionsBuilder()),
+              child: Card(
+                color: CupertinoColors.tertiarySystemFill,
+                margin: const EdgeInsets.all(8.0),
+                child: _suggestionsBuilder(),
+              ),
             ),
           );
         },
@@ -546,21 +531,21 @@ class _SearchFieldAutoCompleteState<T>
       child: Builder(
         builder: (context) {
           if (_isIos) {
-            return CupertinoTextFormFieldRow(
+            return CupertinoSearchTextField(
               key: key,
               enabled: widget.enabled,
               autocorrect: widget.autoCorrect,
-              readOnly: widget.readOnly,
-              onFieldSubmitted: widget.onSubmit,
+              // readOnly: widget.readOnly,
+              // onFieldSubmitted: widget.onSubmit,
               onTap: _onTapField,
-              onSaved: widget.onSaved,
-              inputFormatters: widget.inputFormatters,
+              // onSaved: widget.onSaved,
+              // inputFormatters: widget.inputFormatters,
               controller: widget.controller ?? searchController,
               focusNode: _focus,
-              validator: widget.validator,
+              // validator: widget.validator,
               style: widget.searchStyle,
-              textInputAction: widget.textInputAction,
-              textCapitalization: widget.textCapitalization,
+              //textInputAction: widget.textInputAction,
+              // textCapitalization: widget.textCapitalization,
               keyboardType: widget.inputType,
               placeholder: widget.hint,
               onChanged: _onChangeField,
