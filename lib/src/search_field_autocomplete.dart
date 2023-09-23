@@ -14,6 +14,9 @@ import 'common/model/suggestion_decoration.dart';
 /// when the searchfield is brought into focus
 /// see [example/lib/country_search.dart]
 ///
+
+final bool _isIos = defaultTargetPlatform == TargetPlatform.iOS;
+
 class SearchFieldAutoComplete<T> extends StatefulWidget {
   final FocusNode? focusNode;
 
@@ -252,7 +255,8 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
       _SearchFieldAutoCompleteState();
 }
 
-class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> {
+class _SearchFieldAutoCompleteState<T>
+    extends State<SearchFieldAutoComplete<T>> {
   final StreamController<List<SearchFieldItem<T>?>?> suggestionStream =
       StreamController<List<SearchFieldItem<T>?>?>.broadcast();
 
@@ -338,8 +342,7 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
   Widget _suggestionsBuilder() {
     return StreamBuilder<List<SearchFieldItem<T>?>?>(
       stream: suggestionStream.stream,
-      builder: (BuildContext context,
-          AsyncSnapshot<List<SearchFieldItem<T>?>?> snapshot) {
+      builder: (context, AsyncSnapshot<List<SearchFieldItem<T>?>?> snapshot) {
         if (snapshot.data == null || !isSuggestionExpanded) {
           return const SizedBox();
         } else if (snapshot.data!.isEmpty) {
@@ -363,61 +366,60 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
                 ? const NeverScrollableScrollPhysics()
                 : const ScrollPhysics(),
             itemBuilder: (context, index) => TextFieldTapRegion(
-                child: InkWell(
-              onTap: () {
-                searchController!.text = snapshot.data![index]!.searchKey;
-                searchController!.selection = TextSelection.fromPosition(
-                  TextPosition(
-                    offset: searchController!.text.length,
-                  ),
-                );
+              child: GestureDetector(
+                onTap: () {
+                  searchController!.text = snapshot.data![index]!.searchKey;
+                  searchController!.selection = TextSelection.fromPosition(
+                    TextPosition(offset: searchController!.text.length),
+                  );
 
-                // suggestion action to switch focus to next focus node
-                if (widget.suggestionAction != null) {
-                  if (widget.suggestionAction == SuggestionAction.next) {
-                    _focus!.nextFocus();
-                  } else if (widget.suggestionAction ==
-                      SuggestionAction.unfocus) {
-                    _focus!.unfocus();
+                  // suggestion action to switch focus to next focus node
+                  if (widget.suggestionAction != null) {
+                    if (widget.suggestionAction == SuggestionAction.next) {
+                      _focus!.nextFocus();
+                    } else if (widget.suggestionAction ==
+                        SuggestionAction.unfocus) {
+                      _focus!.unfocus();
+                    }
                   }
-                }
 
-                // hide the suggestions
-                suggestionStream.sink.add(null);
-                if (widget.onSuggestionTap != null) {
-                  widget.onSuggestionTap!(snapshot.data![index]!);
-                }
-              },
-              child: Container(
-                height: widget.itemHeight,
-                width: double.infinity,
-                alignment: Alignment.centerLeft,
-                decoration: widget.suggestionItemDecoration?.copyWith(
-                      border: widget.suggestionItemDecoration?.border ??
-                          Border(
-                            bottom: BorderSide(
-                              color: widget.marginColor ??
-                                  onSurfaceColor.withOpacity(0.1),
-                            ),
-                          ),
-                    ) ??
-                    BoxDecoration(
-                      border: index == snapshot.data!.length - 1
-                          ? null
-                          : Border(
+                  // hide the suggestions
+                  suggestionStream.sink.add(null);
+                  if (widget.onSuggestionTap != null) {
+                    widget.onSuggestionTap!(snapshot.data![index]!);
+                  }
+                },
+                child: Container(
+                  height: widget.itemHeight,
+                  width: double.infinity,
+                  alignment: Alignment.centerLeft,
+                  decoration: widget.suggestionItemDecoration?.copyWith(
+                        border: widget.suggestionItemDecoration?.border ??
+                            Border(
                               bottom: BorderSide(
                                 color: widget.marginColor ??
                                     onSurfaceColor.withOpacity(0.1),
                               ),
                             ),
-                    ),
-                child: snapshot.data![index]!.child ??
-                    Text(
-                      snapshot.data![index]!.searchKey,
-                      style: widget.suggestionStyle,
-                    ),
+                      ) ??
+                      BoxDecoration(
+                        border: index == snapshot.data!.length - 1
+                            ? null
+                            : Border(
+                                bottom: BorderSide(
+                                  color: widget.marginColor ??
+                                      onSurfaceColor.withOpacity(0.1),
+                                ),
+                              ),
+                      ),
+                  child: snapshot.data![index]!.child ??
+                      Text(
+                        snapshot.data![index]!.searchKey,
+                        style: widget.suggestionStyle,
+                      ),
+                ),
               ),
-            )),
+            ),
           );
 
           return AnimatedContainer(
@@ -428,23 +430,24 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
             alignment: Alignment.centerLeft,
             decoration: widget.suggestionsDecoration ??
                 BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
+                  color: _isIos
+                      ? CupertinoTheme.of(context).primaryColor
+                      : Theme.of(context).primaryColor,
                   boxShadow: [
                     BoxShadow(
-                        color: onSurfaceColor.withOpacity(0.1),
-                        blurRadius: 8.0,
-                        spreadRadius: 2.0,
-                        offset: const Offset(
-                          2.0,
-                          5.0,
-                        )),
+                      color: onSurfaceColor.withOpacity(0.1),
+                      blurRadius: 8.0,
+                      spreadRadius: 2.0,
+                      offset: const Offset(2.0, 5.0),
+                    ),
                   ],
                 ),
             child: RawScrollbar(
-                thumbVisibility: widget.scrollbarAlwaysVisible,
-                controller: _scrollController,
-                padding: EdgeInsets.zero,
-                child: listView),
+              thumbVisibility: widget.scrollbarAlwaysVisible,
+              controller: _scrollController,
+              padding: EdgeInsets.zero,
+              child: listView,
+            ),
           );
         }
       },
@@ -454,7 +457,8 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
   /// Decides whether to show the suggestions
   /// on top or bottom of Searchfield
   /// User can have more control by manually specifying the offset
-  Offset? getYOffset(Offset textFieldOffset, Size textFieldSize, int suggestionsCount) {
+  Offset? getYOffset(
+      Offset textFieldOffset, Size textFieldSize, int suggestionsCount) {
     if (mounted) {
       final size = MediaQuery.of(context).size;
       final isSpaceAvailable = size.height >
@@ -494,14 +498,15 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
   }
 
   OverlayEntry _createOverlay() {
-    final textFieldRenderBox = key.currentContext!.findRenderObject() as RenderBox;
+    final textFieldRenderBox =
+        key.currentContext!.findRenderObject() as RenderBox;
     final textFieldsize = textFieldRenderBox.size;
     final offset = textFieldRenderBox.localToGlobal(Offset.zero);
     var yOffset = Offset.zero;
     return OverlayEntry(
       builder: (context) => StreamBuilder<List<SearchFieldItem?>?>(
         stream: suggestionStream.stream,
-        builder: (BuildContext context, AsyncSnapshot<List<SearchFieldItem?>?> snapshot) {
+        builder: (context, AsyncSnapshot<List<SearchFieldItem?>?> snapshot) {
           late var count = widget.maxSuggestionsInViewPort;
           if (snapshot.data != null) {
             count = snapshot.data!.length;
@@ -513,7 +518,7 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
             child: CompositedTransformFollower(
               offset: widget.offset ?? yOffset,
               link: _layerLink,
-              child: Material(child: _suggestionsBuilder()),
+              child: Card(child: _suggestionsBuilder()),
             ),
           );
         },
@@ -540,7 +545,7 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
       link: _layerLink,
       child: Builder(
         builder: (context) {
-          if (defaultTargetPlatform == TargetPlatform.iOS){
+          if (_isIos) {
             return CupertinoTextFormFieldRow(
               key: key,
               enabled: widget.enabled,
@@ -557,79 +562,60 @@ class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>>
               textInputAction: widget.textInputAction,
               textCapitalization: widget.textCapitalization,
               keyboardType: widget.inputType,
-              placeholder:  widget.hint,
-              onChanged: (query) {
-                var searchResult = <SearchFieldItem<T>>[];
-                if (widget.onSearchTextChanged != null) {
-                  searchResult = widget.onSearchTextChanged!(query) ?? [];
-                } else {
-                  if (query.isEmpty) {
-                    _createOverlay();
-                    suggestionStream.sink.add(widget.suggestions);
-                    return;
-                  }
-                  for (final suggestion in widget.suggestions) {
-                    if (widget.comparator != null) {
-                      if (widget.comparator!(query, suggestion.searchKey)) {
-                        searchResult.add(suggestion);
-                      }
-                    } else if (suggestion.searchKey
-                        .toLowerCase()
-                        .contains(query.toLowerCase())) {
-                      searchResult.add(suggestion);
-                    }
-                  }
-                }
-                suggestionStream.sink.add(searchResult);
-              },
+              placeholder: widget.hint,
+              onChanged: _onChangeField,
             );
           } else {
             return TextFormField(
-            key: key,
-            enabled: widget.enabled,
-            autocorrect: widget.autoCorrect,
-            readOnly: widget.readOnly,
-            onFieldSubmitted: widget.onSubmit,
-            onTap: _onTapField,
-            onSaved: widget.onSaved,
-            inputFormatters: widget.inputFormatters,
-            controller: widget.controller ?? searchController,
-            focusNode: _focus,
-            validator: widget.validator,
-            style: widget.searchStyle,
-            textInputAction: widget.textInputAction,
-            textCapitalization: widget.textCapitalization,
-            keyboardType: widget.inputType,
-            decoration: widget.searchInputDecoration?.copyWith(hintText: widget.hint) ?? InputDecoration(hintText: widget.hint),
-            onChanged: (query) {
-              var searchResult = <SearchFieldItem<T>>[];
-              if (widget.onSearchTextChanged != null) {
-                searchResult = widget.onSearchTextChanged!(query) ?? [];
-              } else {
-                if (query.isEmpty) {
-                  _createOverlay();
-                  suggestionStream.sink.add(widget.suggestions);
-                  return;
-                }
-                for (final suggestion in widget.suggestions) {
-                  if (widget.comparator != null) {
-                    if (widget.comparator!(query, suggestion.searchKey)) {
-                      searchResult.add(suggestion);
-                    }
-                  } else if (suggestion.searchKey
-                      .toLowerCase()
-                      .contains(query.toLowerCase())) {
-                    searchResult.add(suggestion);
-                  }
-                }
-              }
-              suggestionStream.sink.add(searchResult);
-            },
-          );
+              key: key,
+              enabled: widget.enabled,
+              autocorrect: widget.autoCorrect,
+              readOnly: widget.readOnly,
+              onFieldSubmitted: widget.onSubmit,
+              onTap: _onTapField,
+              onSaved: widget.onSaved,
+              inputFormatters: widget.inputFormatters,
+              controller: widget.controller ?? searchController,
+              focusNode: _focus,
+              validator: widget.validator,
+              style: widget.searchStyle,
+              textInputAction: widget.textInputAction,
+              textCapitalization: widget.textCapitalization,
+              keyboardType: widget.inputType,
+              decoration: widget.searchInputDecoration
+                      ?.copyWith(hintText: widget.hint) ??
+                  InputDecoration(hintText: widget.hint),
+              onChanged: _onChangeField,
+            );
           }
-        }
+        },
       ),
     );
+  }
+
+  void _onChangeField(query) {
+    var searchResult = <SearchFieldItem<T>>[];
+    if (widget.onSearchTextChanged != null) {
+      searchResult = widget.onSearchTextChanged!(query) ?? [];
+    } else {
+      if (query.isEmpty) {
+        _createOverlay();
+        suggestionStream.sink.add(widget.suggestions);
+        return;
+      }
+      for (final suggestion in widget.suggestions) {
+        if (widget.comparator != null) {
+          if (widget.comparator!(query, suggestion.searchKey)) {
+            searchResult.add(suggestion);
+          }
+        } else if (suggestion.searchKey
+            .toLowerCase()
+            .contains(query.toLowerCase())) {
+          searchResult.add(suggestion);
+        }
+      }
+    }
+    suggestionStream.sink.add(searchResult);
   }
 
   void _onTapField() {
