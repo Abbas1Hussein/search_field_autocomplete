@@ -1,25 +1,33 @@
 import 'package:flutter/widgets.dart';
 
-class SuggestionDecoration extends BoxDecoration {
+class SuggestionDecoration {
   /// padding around the suggestion list
-  @override
   final EdgeInsetsGeometry padding;
+  final BorderRadiusGeometry borderRadius;
+  final List<BoxShadow>? boxShadow;
+  final Gradient? gradient;
+  final BoxShape shape;
+  final Color? color;
+  final Border? border;
 
-  const SuggestionDecoration({
+  SuggestionDecoration({
     this.padding = EdgeInsets.zero,
-    Color? color,
-    Border? border,
-    BorderRadiusGeometry? borderRadius,
-    List<BoxShadow>? boxShadow,
-    Gradient? gradient,
-    BoxShape shape = BoxShape.rectangle,
-  }) : super(
-          color: color,
-          border: border,
-          borderRadius: borderRadius,
-          boxShadow: boxShadow,
-          gradient: gradient,
-          shape: shape,
+    this.borderRadius = BorderRadius.zero,
+    this.boxShadow,
+    this.gradient,
+    this.shape = BoxShape.rectangle,
+    this.color,
+    this.border,
+  });
 
-        );
+  BoxDecoration toBoxDecoration() {
+    return BoxDecoration(
+      color: color,
+      gradient: gradient,
+      borderRadius: borderRadius,
+      border: border,
+      shape: shape,
+      boxShadow: boxShadow,
+    );
+  }
 }

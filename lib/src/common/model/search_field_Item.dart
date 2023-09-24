@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-class SearchFieldItem<T> {
+class SearchFieldAutoCompleteItem<T> {
   Key? key;
 
   /// the text based on which the search happens
@@ -18,12 +18,13 @@ class SearchFieldItem<T> {
   /// if not specified, Text widget with default styling will be used
   /// to show a custom widget, use [child] instead
   /// see example in [example/lib/country_search.dart]()
-  SearchFieldItem(this.searchKey, {this.child, this.item, this.key});
+  SearchFieldAutoCompleteItem(this.searchKey,
+      {this.item, this.child, this.key});
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        other is SearchFieldItem &&
+        other is SearchFieldAutoCompleteItem &&
             runtimeType == other.runtimeType &&
             searchKey == other.searchKey;
   }
