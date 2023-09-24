@@ -1,8 +1,4 @@
-
-```markdown
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
-
-The Search Field AutoComplete package is a Flutter widget that provides an easy way to implement a search field with autocomplete suggestions in your Flutter applications. It allows users to efficiently search for items by typing in a search field and presents them with relevant suggestions.
+The **SearchFieldAutoComplete** package is a Flutter widget that provides an easy way to implement a search field with autocomplete suggestions in your Flutter applications. It allows users to efficiently search for items by typing in a search field and presents them with relevant suggestions.
 
 ## Features
 
@@ -67,8 +63,8 @@ If you want to customize the appearance of individual suggestion items, you can 
 ```dart
 SearchFieldAutoComplete(
   suggestions: yourSuggestionsList,
-  suggestionItemBuilder: (context, suggestionItem, isHighlighted) {
-    // Build and return a custom suggestion item widget.
+  suggestionItemDecorationBuilder: (suggestionItem, index) {
+    // Build and return a custom Decoration suggestion item widget.
     return YourCustomSuggestionWidget(suggestionItem);
   },
   // Other properties...
@@ -77,7 +73,7 @@ SearchFieldAutoComplete(
 
 ## Example
 
-For a more detailed example of how to use this package, check out the [example](example) directory in this repository.
+For a more detailed example of how to use this package, check out the [example](examples) directory in this repository.
 
 ## Contributing
 
@@ -86,7 +82,3 @@ Contributions are welcome! If you encounter any issues or have suggestions for i
 ## License
 
 This package is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-
-

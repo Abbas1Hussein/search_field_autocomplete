@@ -20,8 +20,11 @@ class SuggestionWidget<T> extends StatelessWidget {
   /// The scroll controller for the suggestion list.
   final ScrollController? scrollController;
 
+  /// A decoration for customizing a suggestion items.
+  final SuggestionDecoration? suggestionItemDecoration;
+
   /// A builder for customizing the appearance of suggestion items.
-  final SuggestionItemDecorationBuilder<T>? suggestionItemBuilder;
+  final SuggestionItemBuilder<T>? suggestionItemBuilder;
 
   /// Check if the platform is iOS.
   final bool isIos;
@@ -33,6 +36,7 @@ class SuggestionWidget<T> extends StatelessWidget {
     Key? key,
     this.scrollController,
     this.suggestionItemBuilder,
+    this.suggestionItemDecoration,
     required this.onSuggestionSelected,
     required this.suggestionDirection,
     required this.itemHeight,
@@ -59,18 +63,18 @@ class SuggestionWidget<T> extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
             mouseCursor: SystemMouseCursors.click,
-            onTap: () {
-              onSuggestionSelected(searchFieldItem);
-            },
+            onTap: () => onSuggestionSelected(searchFieldItem),
               child: Builder(
               builder: (context) {
-                final decoration = suggestionItemBuilder?.call(searchFieldItem, index);
+                if (suggestionItemBuilder != null){
+                return suggestionItemBuilder!(context,searchFieldItem);
+                }
                 return Container(
                   height: itemHeight,
                   width: double.infinity,
                   alignment: Alignment.centerLeft,
-                  margin: decoration?.padding,
-                  decoration: decoration?.toBoxDecoration(),
+                  margin: suggestionItemDecoration?.padding,
+                  decoration: suggestionItemDecoration?.toBoxDecoration(),
                   child: searchFieldItem.child ?? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(

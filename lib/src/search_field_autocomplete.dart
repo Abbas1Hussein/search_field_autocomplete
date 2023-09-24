@@ -11,6 +11,7 @@ import 'common/model/scrollbar_properties.dart';
 import 'common/model/search_field_Item.dart';
 import 'common/model/suggestion_decoration.dart';
 import 'common/typedef.dart';
+import 'view/empty_suggestions.dart';
 
 /// A flag to check if the current platform is iOS.
 final bool _isIos = defaultTargetPlatform == TargetPlatform.iOS;
@@ -27,15 +28,17 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// A callback function when a suggestion is tapped.
   final SuggestionSelected<T>? onSuggestionSelected;
 
-  /// A callback function for building search suggestions.
-  /// If not specified, suggestions containing the search text are shown.
-  final SearchBuilder<T>? onSearchBuilder;
-
   /// A flag to enable or disable the SearchFieldAutoComplete.
   final bool? enabled;
 
-  /// A callback function when the SearchFieldAutoComplete is submitted.
+  /// A callback function when the SearchFieldAutoComplete is [submitted].
   final ValueChanged<String?>? onSubmitted;
+
+  /// A callback function when the SearchFieldAutoComplete is [changed].
+  final ValueChanged<String?>? onChanged;
+
+  /// A callback function when the SearchFieldAutoComplete is [Tap].
+  final VoidCallback? onTap;
 
   /// The hint text displayed in the search field.
   final String? hint;
@@ -59,6 +62,9 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// The decoration for the suggestion list, including properties like [BoxShadow].
   final SuggestionDecoration? suggestionsDecoration;
 
+  /// The decoration for customizing a suggestion items.
+  final SuggestionDecoration? suggestionItemDecoration;
+
   /// A custom builder for individual suggestion items.
   ///
   /// This property allows you to provide a function that builds and customizes the decoration
@@ -66,7 +72,31 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   ///
   /// - `searchFieldItem`: The [SearchFieldAutoCompleteItem<T>] representing the suggestion item.
   /// - `index`: An integer representing the index of the suggestion item in the list.
-  final SuggestionItemDecorationBuilder<T>? suggestionItemDecorationBuilder;
+  final SuggestionItemBuilder<T>? suggestionItemBuilder;
+
+  /// A custom sorter function for sorting search suggestions.
+  ///
+  /// This function is responsible for sorting and filtering the search suggestions
+  /// based on the user's input. It allows you to implement custom sorting logic
+  /// for the suggestions.
+  ///
+  /// The [sorter] function takes two parameters:
+  /// - [value]: A string representing the user's input.
+  /// - [suggestions]: A list of [SearchFieldAutoCompleteItem<T>] representing the search suggestions.
+  ///
+  /// The function should return a sorted list of suggestions based on the provided [value].
+  ///
+  /// ```dart
+  /// SearchFieldAutoComplete<MyItemType>(
+  ///   sorter: (query, suggestions) {
+  ///     // You can customize the sorting logic here.
+  ///     // Sort and filter suggestions based on 'value'.
+  ///     // Return the sorted list of suggestions.
+  ///     // For more details, read the * --> examples/lib/example2
+  ///   },
+  /// )
+  /// ```
+  final SuggestionItemSorter<T>? sorter;
 
   /// The height of each suggestion item in the list.
   final double itemHeight;
@@ -85,7 +115,7 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   final Offset? offset;
 
   /// The widget to display when the search returns empty results.
-  final Widget emptyWidget;
+  final Widget Function(String value)? emptyBuilder;
 
   /// Controls whether to enable auto-correction, defaults to `true`.
   final bool autoCorrect;
@@ -108,9 +138,12 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   SearchFieldAutoComplete({
     Key? key,
     required this.suggestions,
+    this.sorter,
+    this.onTap,
+    this.onChanged,
     this.autoCorrect = true,
     this.controller,
-    this.emptyWidget = const SizedBox.shrink(),
+    this.emptyBuilder,
     this.focusNode,
     this.hint,
     this.initialValue,
@@ -118,7 +151,6 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
     this.itemHeight = 35.0,
     this.maxSuggestionsInViewPort = 5,
     this.enabled,
-    this.onSearchBuilder,
     this.onSubmitted,
     this.offset,
     this.onSuggestionSelected,
@@ -128,7 +160,8 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
     this.suggestionsDecoration,
     this.suggestionDirection = SuggestionDirection.down,
     this.suggestionState = Suggestion.expand,
-    this.suggestionItemDecorationBuilder,
+    this.suggestionItemBuilder,
+    this.suggestionItemDecoration,
     this.suggestionAction,
     this.suffixIcon,
     this.onSuffixTap,
@@ -141,11 +174,11 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
         super(key: key);
 
   @override
-  SearchFieldAutoCompleteState<T> createState() =>
-      SearchFieldAutoCompleteState<T>();
+  _SearchFieldAutoCompleteState<T> createState() =>
+      _SearchFieldAutoCompleteState<T>();
 }
 
-class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> {
+class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> {
   /// A stream controller for managing suggestion updates.
   final StreamController<List<SearchFieldAutoCompleteItem<T>?>?>
       suggestionStream =
@@ -163,25 +196,23 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
   /// Represents an overlay entry used to display content above the main widget hierarchy.
   OverlayEntry? _overlayEntry;
 
-  @override
-  void dispose() {
-    // Close the suggestion stream and clean up resources.
-    suggestionStream.close();
-    _scrollController.dispose();
+  /// A LayerLink is used for creating overlays in Flutter.
+  final LayerLink _layerLink = LayerLink();
 
-    // Dispose of the searchController if it's not provided externally.
-    if (widget.controller == null) searchController!.dispose();
+  /// _totalHeight will store a numeric value representing the total height.
+  double _totalHeight = 0.0;
 
-    // Dispose of the focus node if it's not provided externally.
-    if (widget.focusNode == null) _focus!.dispose();
+  /// GlobalKey is a key that is unique across the entire app for identifying widgets.
+  final GlobalKey key = GlobalKey();
 
-    // Remove the overlay entry if it exists and is still mounted.
-    if (_overlayEntry != null && _overlayEntry!.mounted) {
-      _overlayEntry?.remove();
-    }
+  /// A boolean flag to indicate whether a direction has been calculated.
+  bool _isDirectionCalculated = false;
 
-    super.dispose();
-  }
+  /// Offset is used to store the position in a 2D coordinate space.
+  Offset _offset = Offset.zero;
+
+  /// ScrollController is used to control the scroll position of a scrollable widget.
+  final ScrollController _scrollController = ScrollController();
 
   void initialize() {
     // Initialize the focus node either from the widget's focusNode or create a new one.
@@ -283,7 +314,11 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
         if (snapshot.data == null || !isSuggestionExpanded) {
           return const SizedBox();
         } else if (snapshot.data!.isEmpty) {
-          return widget.emptyWidget;
+          if (widget.emptyBuilder != null) {
+            return widget.emptyBuilder!(searchController?.text ?? '');
+          } else {
+            return EmptySuggestionsBuilderWidget(searchController?.text ?? '');
+          }
         } else {
           if (snapshot.data!.length > widget.maxSuggestionsInViewPort) {
             _totalHeight = widget.itemHeight * widget.maxSuggestionsInViewPort;
@@ -295,12 +330,13 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
 
           final SuggestionWidget<T> suggestionWidget = SuggestionWidget(
             itemHeight: widget.itemHeight,
-            suggestionDirection: widget.suggestionDirection,
             data: snapshot.data,
             isIos: _isIos,
-            suggestionItemBuilder: widget.suggestionItemDecorationBuilder,
+            suggestionItemBuilder: widget.suggestionItemBuilder,
             scrollController: _scrollController,
+            suggestionItemDecoration: widget.suggestionItemDecoration,
             suggestionStyle: widget.suggestionStyle,
+            suggestionDirection: widget.suggestionDirection,
             onSuggestionSelected: _onSuggestionSelected,
           );
 
@@ -377,7 +413,7 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
         // Focus on the next focus node.
         _focus!.nextFocus();
       } else if (widget.suggestionAction == SuggestionAction.unfocus) {
-        // Unfocus the current focus node.
+        // Unfocused the current focus node.
         _focus!.unfocus();
       }
     }
@@ -471,27 +507,8 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
     );
   }
 
-  /// A LayerLink is used for creating overlays in Flutter.
-  final LayerLink _layerLink = LayerLink();
-
-  /// _totalHeight will store a numeric value representing the total height.
-  late double _totalHeight;
-
-  /// GlobalKey is a key that is unique across the entire app for identifying widgets.
-  final GlobalKey key = GlobalKey();
-
-  /// A boolean flag to indicate whether a direction has been calculated.
-  bool _isDirectionCalculated = false;
-
-  /// Offset is used to store the position in a 2D coordinate space.
-  Offset _offset = Offset.zero;
-
-  /// ScrollController is used to control the scroll position of a scrollable widget.
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
-    _calculateTotalHeight();
     return CompositedTransformTarget(
       link: _layerLink,
       child: Builder(
@@ -559,38 +576,38 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
     );
   }
 
-  /// Calculate the total height based on the number of suggestions and item height.
-  void _calculateTotalHeight() {
-    if (widget.suggestions.length > widget.maxSuggestionsInViewPort) {
-      _totalHeight = widget.itemHeight * widget.maxSuggestionsInViewPort;
-    } else {
-      _totalHeight = widget.suggestions.length * widget.itemHeight;
-    }
+  /// Handle changes in the search field.
+  void _onChangeField(String value) {
+    // Call the onChanged callback if provided.
+    widget.onChanged?.call(value);
+
+    // Use the custom sorter if provided; otherwise, use the default sorter.
+    final List<SearchFieldAutoCompleteItem<T>> searchResult = widget.sorter?.call(value, widget.suggestions) ??
+        defaultItemSorter(value, widget.suggestions);
+
+    // Update the suggestion stream with the sorted results.
+    suggestionStream.sink.add(searchResult);
   }
 
-  /// Handle changes in the search field.
-  void _onChangeField(query) {
-    List<SearchFieldAutoCompleteItem<T>> searchResult =
-        <SearchFieldAutoCompleteItem<T>>[];
-    if (widget.onSearchBuilder != null) {
-      searchResult = widget.onSearchBuilder!(query);
-    } else {
-      if (query.isEmpty) {
-        _createOverlay();
-        suggestionStream.sink.add(widget.suggestions);
-        return;
-      }
-      for (final suggestion in widget.suggestions) {
-        if (suggestion.searchKey.toLowerCase().contains(query.toLowerCase())) {
-          searchResult.add(suggestion);
-        }
-      }
-    }
-    suggestionStream.sink.add(searchResult);
+  /// The default item sorter.
+  ///
+  /// This sorter will filter the items based on their search key.
+  List<SearchFieldAutoCompleteItem<T>> defaultItemSorter(
+    String text,
+    List<SearchFieldAutoCompleteItem<T>> items,
+  ) {
+    text = text.trim();
+    if (text.isEmpty) return items;
+
+    return items.where((element) {
+      return element.searchKey.toLowerCase().contains(text.toLowerCase());
+    }).toList();
   }
 
   /// Handle tap events on the search field.
   void _onTapField() {
+    widget.onTap?.call();
+
     /// Only call if SuggestionState = [Suggestion.expand]
     if (!isSuggestionExpanded && widget.suggestionState == Suggestion.expand) {
       suggestionStream.sink.add(widget.suggestions);
@@ -600,5 +617,25 @@ class SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> 
         });
       }
     }
+  }
+
+  @override
+  void dispose() {
+    // Close the suggestion stream and clean up resources.
+    suggestionStream.close();
+    _scrollController.dispose();
+
+    // Dispose of the searchController if it's not provided externally.
+    if (widget.controller == null) searchController!.dispose();
+
+    // Dispose of the focus node if it's not provided externally.
+    if (widget.focusNode == null) _focus!.dispose();
+
+    // Remove the overlay entry if it exists and is still mounted.
+    if (_overlayEntry != null && _overlayEntry!.mounted) {
+      _overlayEntry?.remove();
+    }
+
+    super.dispose();
   }
 }

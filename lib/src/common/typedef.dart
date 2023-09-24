@@ -1,13 +1,13 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../search_field_autocomplete.dart';
 
 /// building a suggestion item widget.
-typedef SuggestionItemDecorationBuilder<T> = SuggestionDecoration Function(
-    SearchFieldAutoCompleteItem<T> searchFieldItem, int index);
-
-/// building search suggestions based on the user's input.
-typedef SearchBuilder<T> = List<SearchFieldAutoCompleteItem<T>> Function(
-    String value);
+typedef SuggestionItemBuilder<T> = Widget Function(
+    BuildContext context, SearchFieldAutoCompleteItem<T> searchFieldItem);
 
 /// handling the selection of a suggestion.
 typedef SuggestionSelected<T> = void Function(
     SearchFieldAutoCompleteItem<T> searchFieldItem);
+
+typedef SuggestionItemSorter<T> = List<SearchFieldAutoCompleteItem<T>> Function(String value, List<SearchFieldAutoCompleteItem<T>> items);
