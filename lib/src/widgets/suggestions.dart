@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../search_field_autocomplete.dart';
+import '../../search_field_autocomplete.dart';
 
 /// A widget for displaying a list of suggestions.
 class SuggestionWidget<T> extends StatelessWidget {

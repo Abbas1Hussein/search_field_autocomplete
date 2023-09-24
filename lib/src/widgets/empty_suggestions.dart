@@ -51,7 +51,7 @@ class _EmptySuggestionsBuilderWidgetState
                 const Icon(Icons.search_off, size: 48.0, color: Colors.grey),
                 const SizedBox(height: 8.0),
                 Text(
-                  'No Results Found: ${widget.value}',
+                  'No Results Found: ${widget.value.trim()}',
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
