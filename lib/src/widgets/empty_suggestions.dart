@@ -1,24 +1,33 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class EmptySuggestionsBuilderWidget extends StatefulWidget {
+import '../common/extensions.dart';
+import '../translations/translation_service.dart';
+
+class DefaultEmptySuggestionsWidget extends StatefulWidget {
+  final bool isIOS;
+
   final String value;
 
-  const EmptySuggestionsBuilderWidget(this.value, {Key? key}) : super(key: key);
+  const DefaultEmptySuggestionsWidget(
+    this.value, {
+    Key? key,
+    required this.isIOS,
+  }) : super(key: key);
 
   @override
-  _EmptySuggestionsBuilderWidgetState createState() =>
-      _EmptySuggestionsBuilderWidgetState();
+  _DefaultEmptySuggestionsWidgetState createState() => _DefaultEmptySuggestionsWidgetState();
 }
 
-class _EmptySuggestionsBuilderWidgetState
-    extends State<EmptySuggestionsBuilderWidget>
+class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsWidget>
     with SingleTickerProviderStateMixin {
+  static const _edgeInsets = EdgeInsets.all(8.0);
+
   late AnimationController _controller;
   late Animation<double> _animation;
 
   @override
   void initState() {
-    // Initialize the animation controller
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
 
@@ -32,38 +41,51 @@ class _EmptySuggestionsBuilderWidgetState
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context, child) {
+      builder: (context, _) {
         return SizeTransition(
           sizeFactor: _animation,
           child: Container(
+            margin: _edgeInsets,
+            padding: _edgeInsets,
             alignment: Alignment.center,
-            padding: const EdgeInsets.all(16.0),
+            width: double.infinity,
             decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(color: Colors.red.shade600, width: 2.0),
+              gradient: LinearGradient(
+                stops: const [0.007, 0.007],
+                colors: [CupertinoColors.destructiveRed, linearGradientColors],
               ),
+              boxShadow: widget.isIOS ? null : elevations,
+              borderRadius: BorderRadius.circular(_edgeInsets.horizontal),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.search_off, size: 48.0, color: Colors.grey),
-                const SizedBox(height: 8.0),
-                Text(
-                  'No Results Found: ${widget.value.trim()}',
-                  style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
+            child: Material(
+              color: Colors.transparent,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.search_off, size: 48.0, color: Colors.grey),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    '${TranslationService.translate('noResultsFound', locale)}: ${widget.value.trim()}',
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                    ),
+                    textDirection: TranslationService.textDirection(locale),
                   ),
-                ),
-                const SizedBox(height: 8.0),
-                const Text(
-                  'Try a different search term.',
-                  style: TextStyle(fontSize: 16.0, color: Colors.grey),
-                ),
-              ],
+                  const SizedBox(height: 8.0),
+                  Text(
+                    TranslationService.translate('tryDifferentTerm', locale),
+                    style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+                    textDirection: TranslationService.textDirection(locale),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -71,9 +93,16 @@ class _EmptySuggestionsBuilderWidgetState
     );
   }
 
+  Color get linearGradientColors {
+    if (widget.isIOS) {
+      return CupertinoColors.tertiarySystemFill;
+    } else {
+      return Theme.of(context).cardColor;
+    }
+  }
+
   @override
   void dispose() {
-    // Dispose of the animation controller when it's no longer needed
     _controller.dispose();
     super.dispose();
   }

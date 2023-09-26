@@ -19,10 +19,9 @@ class Example2 extends StatefulWidget {
 }
 
 class _Example2State extends State<Example2> {
-  final TextEditingController controller = TextEditingController();
-
   late List<User> users;
-  List<User> selectedUsers = []; // Track selected users
+
+  Set<User> selectedUsers = {}; // Track selected users
 
   @override
   void initState() {
@@ -36,58 +35,43 @@ class _Example2State extends State<Example2> {
       (index) => User(
         gamerTag: 'GamerTag ${index + 1}',
         id: index + 1,
-        imageUrl: 'https://via.placeholder.com/50', // Example image URL
+        imageUrl: 'https://via.placeholder.com/50',
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final itemHeight = MediaQuery.of(context).size.height * 0.06;
     return Scaffold(
-      appBar: AppBar(title: const Text('Search Field AutoComplete Example')),
+      appBar: AppBar(title: const Text('SearchField AutoComplete Example2')),
       body: Center(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: SearchFieldAutoComplete<User>(
-                controller: controller,
+                placeholder: 'Search gamer tags',
                 suggestions: users.map((user) {
-                  return SearchFieldAutoCompleteItem<User>(user.gamerTag, item: user);
+                  return SearchFieldAutoCompleteItem<User>(
+                    user.gamerTag,
+                    item: user,
+                  );
                 }).toList(),
+                emptyBuilder: (value) {
+                  /// Check if the input value has a length larger than or equal to 3.
+                  /// If so, return null to use the default emptyWidget.
+                  if (value.length >= 3) return null;
 
-                sorter: (value, items) {
-                  return items.where((element) {
-                    return value.isNotEmpty && element.searchKey.contains(value.trim());
-                  }).toList();
+                  /// Otherwise, return [SizedBox.shrink] to display an empty widget.
+                  return const SizedBox.shrink();
                 },
                 onSuggestionSelected: (selectedItem) {
-                  // Handle the selected suggestion.
                   final selectedUser = selectedItem.item!;
                   print("Selected Gamer Tag: ${selectedUser.gamerTag}");
                   print("User ID: ${selectedUser.id}");
-                  selectedUsers.add(selectedUser); // Add to selected list
-                  setState(() {});
-                },
-                hint: 'Search gamer tags',
-                searchStyle: const TextStyle(fontSize: 18),
-                suggestionStyle: const TextStyle(fontSize: 16),
-                itemHeight: itemHeight,
-                suggestionItemBuilder: (context, suggestionItem) {
-                  return Container(
-                    padding: const EdgeInsets.all(8.0),
-                    height: itemHeight,
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          child: Text(suggestionItem.item!.id.toString()),
-                        ),
-                        const SizedBox(width: 16.0),
-                        Text(suggestionItem.searchKey),
-                      ],
-                    ),
-                  );
+                  setState(() {
+                    selectedUsers.add(selectedUser);
+                  });
                 },
               ),
             ),
@@ -96,15 +80,21 @@ class _Example2State extends State<Example2> {
                 itemCount: selectedUsers.length,
                 padding: const EdgeInsets.all(8.0),
                 itemBuilder: (context, index) {
+                  final user = selectedUsers.elementAt(index);
                   return Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: ListTile(
-                        onTap: () {},
-                        leading: CircleAvatar(
-                          child: Text(selectedUsers[index].id.toString()),
+                        leading: CircleAvatar(child: Text(user.id.toString())),
+                        title: Text(user.gamerTag),
+                        trailing: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedUsers.remove(user);
+                            });
+                          },
+                          icon: const Icon(Icons.remove),
                         ),
-                        title: Text(selectedUsers[index].gamerTag),
                         // Add any additional information you want to display here
                       ),
                     ),

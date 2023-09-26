@@ -31,23 +31,35 @@ class Example1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      darkTheme: ThemeData.dark(useMaterial3: true),
+      themeMode: ThemeMode.dark,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Search Field AutoComplete Example'),
+          title: const Text('SearchField AutoComplete Example'),
         ),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SearchFieldAutoComplete<String>(
+              placeholder: 'Search fruits',
               suggestions: suggestions,
+              suggestionsDecoration: SuggestionDecoration(
+                padding: const EdgeInsets.all(8.0),
+                color: Colors.greenAccent,
+                borderRadius: BorderRadius.circular(16.0),
+              ),
               onSuggestionSelected: (selectedItem) {
-                // Handle the selected suggestion.
-                print("Selected: ${selectedItem.searchKey}");
+                print("selected: ${selectedItem.searchKey}");
               },
-              searchStyle: const TextStyle(fontSize: 18),
-              suggestionStyle: const TextStyle(fontSize: 16),
-              hint: 'Search fruits',
-              maxSuggestionsInViewPort: 5,
+              suggestionItemBuilder: (context, searchFieldItem) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    searchFieldItem.searchKey,
+                    style: TextStyle(color: Colors.blueGrey.shade900),
+                  ),
+                );
+              },
             ),
           ),
         ),

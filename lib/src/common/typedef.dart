@@ -10,4 +10,6 @@ typedef SuggestionItemBuilder<T> = Widget Function(
 typedef SuggestionSelected<T> = void Function(
     SearchFieldAutoCompleteItem<T> searchFieldItem);
 
-typedef SuggestionItemSorter<T> = List<SearchFieldAutoCompleteItem<T>> Function(String value, List<SearchFieldAutoCompleteItem<T>> items);
+/// sorting and filtering suggestion items based on user input.
+typedef SuggestionItemSorter<T> = List<SearchFieldAutoCompleteItem<T>> Function(
+    String value, List<SearchFieldAutoCompleteItem<T>> items);

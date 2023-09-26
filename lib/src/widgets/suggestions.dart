@@ -20,9 +20,6 @@ class SuggestionWidget<T> extends StatelessWidget {
   /// The scroll controller for the suggestion list.
   final ScrollController? scrollController;
 
-  /// A decoration for customizing a suggestion items.
-  final SuggestionDecoration? suggestionItemDecoration;
-
   /// A builder for customizing the appearance of suggestion items.
   final SuggestionItemBuilder<T>? suggestionItemBuilder;
 
@@ -36,67 +33,68 @@ class SuggestionWidget<T> extends StatelessWidget {
     Key? key,
     this.scrollController,
     this.suggestionItemBuilder,
-    this.suggestionItemDecoration,
     required this.onSuggestionSelected,
     required this.suggestionDirection,
     required this.itemHeight,
     required this.data,
     required this.isIos,
     this.suggestionStyle,
-  }) : super(key: key);
+  })  : assert(
+          !(suggestionItemBuilder != null && suggestionStyle != null),
+          'You cannot use both suggestionItemBuilder and suggestionStyle at the same time.',
+        ),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
-      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-      child: ListView.builder(
-        reverse: suggestionDirection == SuggestionDirection.up,
-        padding: EdgeInsets.zero,
-        controller: scrollController,
-        itemCount: data!.length,
-        physics: data!.length == 1
-            ? const NeverScrollableScrollPhysics()
-            : const ScrollPhysics(),
-        itemBuilder: (context, index) {
-          final SearchFieldAutoCompleteItem<T> searchFieldItem = data![index]!;
-          return InkWell(
-            borderRadius: BorderRadius.circular(8.0),
-            splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
-            mouseCursor: SystemMouseCursors.click,
-            onTap: () => onSuggestionSelected(searchFieldItem),
-              child: Builder(
-              builder: (context) {
-                if (suggestionItemBuilder != null){
-                return suggestionItemBuilder!(context,searchFieldItem);
-                }
-                return Container(
-                  height: itemHeight,
-                  width: double.infinity,
-                  alignment: Alignment.centerLeft,
-                  margin: suggestionItemDecoration?.padding,
-                  decoration: suggestionItemDecoration?.toBoxDecoration(),
-                  child: searchFieldItem.child ?? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: Text(
+    return Material(
+      shadowColor: Colors.transparent,
+      color: Colors.transparent,
+      child: ScrollConfiguration(
+        behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+        child: ListView.builder(
+          reverse: suggestionDirection == SuggestionDirection.up,
+          padding: const EdgeInsets.all(2.0),
+          controller: scrollController,
+          itemCount: data!.length,
+          physics: data!.length == 1
+              ? const NeverScrollableScrollPhysics()
+              : const ScrollPhysics(),
+          itemBuilder: (context, index) {
+            final SearchFieldAutoCompleteItem<T> searchFieldItem =
+                data![index]!;
+            return InkWell(
+              borderRadius: BorderRadius.circular(8.0),
+              splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
+              mouseCursor: SystemMouseCursors.click,
+              onTap: () => onSuggestionSelected(searchFieldItem),
+              child: suggestionItemBuilder != null
+                  ? suggestionItemBuilder!(context, searchFieldItem)
+                  : Container(
+                      height: itemHeight,
+                      width: double.infinity,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.all(8.0),
+                      child: searchFieldItem.child ??
+                          Text(
                             searchFieldItem.searchKey,
                             style: suggestionStyle ??
-                                (isIos
-                                    ? CupertinoTheme.of(context)
-                                        .textTheme
-                                        .textStyle
-                                    : Theme.of(context).textTheme.bodySmall),
+                                _defaultSuggestionStyle(context),
                           ),
-                        ),
-                      ),
-                );
-              },
-            ),
-          );
-        },
+                    ),
+            );
+          },
+        ),
       ),
     );
   }
 
+  TextStyle? _defaultSuggestionStyle(BuildContext context) {
+    if (isIos) {
+      final cupertinoTheme = CupertinoTheme.of(context);
+      return cupertinoTheme.textTheme.textStyle;
+    } else {
+      return null;
+    }
+  }
 }
