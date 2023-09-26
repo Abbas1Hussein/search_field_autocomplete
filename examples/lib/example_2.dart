@@ -22,7 +22,7 @@ class Example2 extends StatefulWidget {
 class _Example2State extends State<Example2> {
   late List<User> users;
 
-  Set<User> selectedUsers = {}; // Track selected users
+  Set<User> selectedUsers = {};
 
   @override
   void initState() {
@@ -44,7 +44,6 @@ class _Example2State extends State<Example2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text('SearchField AutoComplete Example2')),
       body: Center(
         child: Column(
           children: [
@@ -96,7 +95,6 @@ class _Example2State extends State<Example2> {
                           },
                           icon: const Icon(Icons.remove),
                         ),
-                        // Add any additional information you want to display here
                       ),
                     ),
                   );
