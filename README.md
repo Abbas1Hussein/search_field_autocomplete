@@ -1,11 +1,10 @@
-```markdown
+`search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 [![pub package](https://img.shields.io/pub/v/search_field_autocomplete.svg)](https://pub.dartlang.org/packages/search_field_autocomplete)
 [![GitHub](https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
 
-`search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 ## Features
 
@@ -19,15 +18,7 @@
 - Highly customizable with various styling options.
 
 ## Usage
-
-To use this package, add `search_field_autocomplete` as a dependency in your `pubspec.yaml` file:
-
-```yaml
-dependencies:
-  search_field_autocomplete: ^latest_version
-```
-
-Then, import the package in your Dart code:
+import the package in your Dart code:
 
 ```dart
 import 'package:search_field_autocomplete/search_field_autocomplete.dart';
