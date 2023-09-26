@@ -24,11 +24,6 @@ import the package in your Dart code:
 import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 ```
 
-## Example
-
-Here's a simple example of how to use `SearchFieldAutoComplete`:
-
-
 ```dart
 SearchFieldAutoComplete<String>(
       suggestions: [
@@ -46,14 +41,12 @@ SearchFieldAutoComplete<String>(
 ```
 
 ## Example
-
 For a more detailed example of how to use this package, check out the [example](examples) directory in this repository.
 
 ## Contributing
-
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or create a pull request on GitHub.
 
 ## License
-
 This package is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ```
