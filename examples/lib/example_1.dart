@@ -30,20 +30,6 @@ class Example1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SearchFieldAutoComplete<String>(
-      suggestions: [
-        SearchFieldAutoCompleteItem<String>('Apple', item: 'apple'),
-        SearchFieldAutoCompleteItem<String>('Banana', item: 'banana'),
-        SearchFieldAutoCompleteItem<String>('Cherry', item: 'cherry'),
-        SearchFieldAutoCompleteItem<String>('Date', item: 'date'),
-        SearchFieldAutoCompleteItem<String>('Fig', item: 'fig'),
-        // Add more suggestions as needed
-      ],
-      onSuggestionSelected: (value) {
-        // Handle the selected suggestion
-        print('Selected: $value');
-      },
-    );
     return MaterialApp(
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.dark,
