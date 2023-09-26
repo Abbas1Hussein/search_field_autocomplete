@@ -9,6 +9,7 @@
 
 ![DARK](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
 
+[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
 
 ### Video Demonstrations
 
