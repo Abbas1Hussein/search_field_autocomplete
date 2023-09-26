@@ -88,6 +88,8 @@ SearchFieldAutoComplete<String>(
 
 ![Light](https://blogger.googleusercontent.com/img/a/AVvXsEiVHCq1gi-PQWgRlKAqYWzmj2u_dslUTRsiIkre_WPndzh64RCbt9eF3kI18HaGEauJUgYCjwka9uaTRGfLkiKYVc5Jsth9IgjWM8eR2lo5gAsnH6Krq2CyS8YTrCPzFYXl0NwWlt6fSP6OE9Q-bjzJlwUcbWajmEA24BQeSV_xioNxxZNP_pAleoQhNTU)
 
+- Messages `noResultFound` and `try Different Term` will be displayed in different languages based on the user's locale.
+
 - For more details and examples, see:
 - [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
 
