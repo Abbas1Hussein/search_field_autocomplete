@@ -84,8 +84,9 @@ SearchFieldAutoComplete<String>(
 - The widget to display when the search returns empty results.
 - when retrieve 'null' will display --> [DefaultEmptySuggestionsWidget](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/lib/src/widgets/empty_suggestions.dart).
 
-- [Dark](https://blogger.googleusercontent.com/img/a/AVvXsEgKNah3dY9DrQNBxd8oH7lqLIzkIzOnBwXB4JbAJaceWD-rr14LM5jzQQbukBf_Rt1QbyNiOuTnuhfyO47QXHYXSu5jVL_lY5P34OQibzZRpUA0rVcG0gBbrREU8QgoCfpUBqVRpINaJ9udhdQyAvc7iAtnKlb5zKC4-D08EA_SSyK5MOjb1wt9Irt7x2Q)
-- [Light](https://blogger.googleusercontent.com/img/a/AVvXsEiVHCq1gi-PQWgRlKAqYWzmj2u_dslUTRsiIkre_WPndzh64RCbt9eF3kI18HaGEauJUgYCjwka9uaTRGfLkiKYVc5Jsth9IgjWM8eR2lo5gAsnH6Krq2CyS8YTrCPzFYXl0NwWlt6fSP6OE9Q-bjzJlwUcbWajmEA24BQeSV_xioNxxZNP_pAleoQhNTU)
+![Dark](https://blogger.googleusercontent.com/img/a/AVvXsEgKNah3dY9DrQNBxd8oH7lqLIzkIzOnBwXB4JbAJaceWD-rr14LM5jzQQbukBf_Rt1QbyNiOuTnuhfyO47QXHYXSu5jVL_lY5P34OQibzZRpUA0rVcG0gBbrREU8QgoCfpUBqVRpINaJ9udhdQyAvc7iAtnKlb5zKC4-D08EA_SSyK5MOjb1wt9Irt7x2Q)
+
+![Light](https://blogger.googleusercontent.com/img/a/AVvXsEiVHCq1gi-PQWgRlKAqYWzmj2u_dslUTRsiIkre_WPndzh64RCbt9eF3kI18HaGEauJUgYCjwka9uaTRGfLkiKYVc5Jsth9IgjWM8eR2lo5gAsnH6Krq2CyS8YTrCPzFYXl0NwWlt6fSP6OE9Q-bjzJlwUcbWajmEA24BQeSV_xioNxxZNP_pAleoQhNTU)
 
 - For more details and examples, see:
 - [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
