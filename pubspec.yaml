@@ -1,6 +1,6 @@
 name: search_field_autocomplete
 description: A Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
-version: y0.0.2
+version: 0.0.2
 homepage: https://github.com/Abbas1Hussein/search_field_autocomplete
 
 environment:
