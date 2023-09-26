@@ -9,8 +9,8 @@
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 <div align="center">
-  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/4f4ba0b7-2bb4-49f5-91c5-7221e1902928" width="45%" />
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/746de5d6-8084-4565-bc8b-3cf71a73ae67" width="45%" />
+  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/4f4ba0b7-2bb4-49f5-91c5-7221e1902928" width="45%" />
 </div>
 
 ## Features
@@ -162,7 +162,7 @@ SearchFieldAutoComplete<String>(
 - Represents optional properties for a scrollbar.
 
 ## Example
-For a more detailed example of how to use this package, check out the [example](examples) directory in this repository.
+For a more detailed example of how to use this package, check out the [example](example) directory in this repository.
 
 ## Contributing
 Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or create a pull request on GitHub.
