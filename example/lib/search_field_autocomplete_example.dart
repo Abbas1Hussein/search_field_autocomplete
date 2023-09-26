@@ -34,9 +34,7 @@ class Example1 extends StatelessWidget {
       darkTheme: ThemeData.dark(useMaterial3: true),
       themeMode: ThemeMode.dark,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('SearchField AutoComplete Example'),
-        ),
+        appBar: AppBar(title: const Text('SearchField AutoComplete Example')),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
