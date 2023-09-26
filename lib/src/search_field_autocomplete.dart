@@ -40,7 +40,7 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// The function should return a sorted list of suggestions based on the provided [value].
   ///
   /// ```dart
-  /// SearchFieldAutoComplete<MyItemType>(
+  /// SearchFieldAutoComplete<T>(
   ///   sorter: (query, suggestions) {
   ///     // You can customize the sorting logic here.
   ///     // Sort and filter suggestions based on 'value'.

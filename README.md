@@ -50,21 +50,21 @@ SearchFieldAutoComplete<String>(
 
 ### `sorter`
 - A custom sorter function for sorting search suggestions. This function is responsible for sorting and filtering the search suggestions based on the user's input. The [sorter] function takes two parameters:
-    - [value]: A string representing the user's input.
-    - [suggestions]: A list of [SearchFieldAutoCompleteItem<T>] representing the search suggestions. The function should return a sorted list of suggestions based on the provided [value].
-    - The function should return a sorted list of suggestions based on the provided [value].
+- [value]: A string representing the user's input.
+- [suggestions]: A list of [SearchFieldAutoCompleteItem<T>] representing the search suggestions. The function should return a sorted list of suggestions based on the provided [value].
+- The function should return a sorted list of suggestions based on the provided [value].
      
-       ```dart
-         SearchFieldAutoComplete<MyItemType>(
-         sorter: (query, suggestions) {
-           // You can customize the sorting logic here.
-           // Sort and filter suggestions based on 'value'.
-           // Return the sorted list of suggestions.
-         },
-       )
-       ```
-     - For more details and examples, see:
-     - [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_3.dart)
+   ```dart
+     SearchFieldAutoComplete<T>(
+     sorter: (query, suggestions) {
+       // You can customize the sorting logic here.
+       // Sort and filter suggestions based on 'value'.
+       // Return the sorted list of suggestions.
+     },
+   )
+   ```
+- For more details and examples, see:
+- [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_3.dart)
   
 ### `itemHeight`
 - The height of each suggestion item in the list.
@@ -82,7 +82,11 @@ SearchFieldAutoComplete<String>(
 - The offset for the suggestion list from the SearchFieldAutoComplete.
 
 ### `emptyBuilder`
-- The widget to display when the search returns empty results. When set to `null`, it will display the [DefaultEmptySuggestionsWidget].
+- The widget to display when the search returns empty results.
+- when retrieve 'null' will display --> [DefaultEmptySuggestionsWidget](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/lib/src/widgets/empty_suggestions.dart).
+
+- For more details and examples, see:
+- [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
 
 ### `autoCorrect`
 - Controls whether to enable auto-correction, defaults to `true`.
