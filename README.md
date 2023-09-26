@@ -6,8 +6,8 @@
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 <div align="center">
-  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0" width="45%" />
-  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c" width="45%" />
+  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0" width="65%" />
+  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c" width="65%" />
 </div>
 
 
