@@ -9,6 +9,12 @@
 ![light_material](https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c)
 
 
+<div align="center">
+  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0" width="45%" />
+  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c" width="45%" />
+</div>
+
+
 ## Features
 
 - Display autocomplete suggestions as the user types.
