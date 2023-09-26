@@ -5,27 +5,8 @@
 
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
-![LIGHT](https://drive.google.com/file/d/14UFUyrg_XnydPCa74YnIjqo8uwfWpwD0/view?usp=sharing)
-
-![DARK](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
-
-[![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
-
-<
-video src=https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing' width=180 
-/>
-
-
-### Video Demonstrations
-
-- [Watch the Light Mode Video](https://drive.google.com/file/d/14UFUyrg_XnydPCa74YnIjqo8uwfWpwD0/view?usp=sharing)
-
-- [Watch the Dark Mode Video](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
-
-Click the links above to view video demonstrations of our package in action in both light and dark modes.
-
-
-Click on the images above to watch video demonstrations in both light and dark modes.
+![dark_cupertino](https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0)
+![light_material](https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c)
 
 ## Features
 
