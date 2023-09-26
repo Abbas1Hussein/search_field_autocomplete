@@ -28,33 +28,32 @@ import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 
 Here's a simple example of how to use `SearchFieldAutoComplete`:
 
+
 ```dart
 SearchFieldAutoComplete<String>(
-  suggestions: [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Grapes',
-    // Add more suggestions as needed
-  ],
-  onSuggestionSelected: (value) {
-    // Handle the selected suggestion
-    print('Selected: $value');
-  },
-)
+      suggestions: [
+        SearchFieldAutoCompleteItem<String>('Apple', item: 'apple'),
+        SearchFieldAutoCompleteItem<String>('Banana', item: 'banana'),
+        SearchFieldAutoCompleteItem<String>('Cherry', item: 'cherry'),
+        SearchFieldAutoCompleteItem<String>('Date', item: 'date'),
+        SearchFieldAutoCompleteItem<String>('Fig', item: 'fig'),
+      ],
+      onSuggestionSelected: (value) {
+        // Handle the selected suggestion
+        print('Selected: $value');
+      },
+);
 ```
 
-For more advanced examples and customization options, please refer to the [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete).
+## Example
 
-## Documentation
+For a more detailed example of how to use this package, check out the [example](examples) directory in this repository.
 
-For detailed documentation and examples, visit the [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete).
+## Contributing
+
+Contributions are welcome! If you encounter any issues or have suggestions for improvements, please open an issue or create a pull request on GitHub.
 
 ## License
 
-This package is licensed under the MIT License. See the [LICENSE](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE) file for details.
-
+This package is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-You can copy and paste this README into your package's documentation. Make sure to replace `^latest_version` in the `pubspec.yaml` section with the actual version number of your package. Feel free to modify and expand the README to provide more details and examples as needed.
