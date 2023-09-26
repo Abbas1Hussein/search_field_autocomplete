@@ -11,6 +11,11 @@
 
 [![Demo CountPages alpha](https://share.gifyoutube.com/KzB6Gb.gif)](https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing)
 
+<
+video src=https://drive.google.com/file/d/1gAODLkvBKPGih-OlvgvZsdnex_lcbbsm/view?usp=sharing' width=180 
+/>
+
+
 ### Video Demonstrations
 
 - [Watch the Light Mode Video](https://drive.google.com/file/d/14UFUyrg_XnydPCa74YnIjqo8uwfWpwD0/view?usp=sharing)
