@@ -6,21 +6,11 @@
 
 [//]: # ([![GitHub forks]&#40;https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete&#41;]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/network&#41;)
 
-
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
-[//]: # (![dark_cupertino]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0&#41;)
+![light_material](https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/4f4ba0b7-2bb4-49f5-91c5-7221e1902928)
 
-[//]: # (![light_material]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c&#41;)
-
-[//]: # ()
-[//]: # (<div align="center">)
-
-[//]: # (  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/12207714-662d-4081-a4a7-1f77eb83dbd0" width="45%" />)
-
-[//]: # (  <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/3f9888c2-0ef9-41d6-8153-d64cb012f65c" width="45%" />)
-
-[//]: # (</div>)
+![dark_cupertino](https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/746de5d6-8084-4565-bc8b-3cf71a73ae67)
 
 ## Features
 
