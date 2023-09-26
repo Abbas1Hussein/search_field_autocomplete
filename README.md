@@ -37,9 +37,10 @@ SearchFieldAutoComplete<String>(
         print('Selected: $value');
       },
 );
+
+```
 - For more details and examples, see:
 - [Example 1](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_1.dart)
-```
 
 ## Important Parameters
 
