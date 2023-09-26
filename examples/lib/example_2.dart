@@ -3,9 +3,10 @@ import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      darkTheme: ThemeData.dark(useMaterial3: true),
-      themeMode: ThemeMode.dark,
+     MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(useMaterial3: true),
+      themeMode: ThemeMode.light,
       home: const Example2(),
     ),
   );
@@ -43,7 +44,7 @@ class _Example2State extends State<Example2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('SearchField AutoComplete Example2')),
+      // appBar: AppBar(title: const Text('SearchField AutoComplete Example2')),
       body: Center(
         child: Column(
           children: [

@@ -3,7 +3,6 @@
 [![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
 
-
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 ## Features
@@ -85,6 +84,9 @@ SearchFieldAutoComplete<String>(
 - The widget to display when the search returns empty results.
 - when retrieve 'null' will display --> [DefaultEmptySuggestionsWidget](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/lib/src/widgets/empty_suggestions.dart).
 
+- [Dark](https://blogger.googleusercontent.com/img/a/AVvXsEgKNah3dY9DrQNBxd8oH7lqLIzkIzOnBwXB4JbAJaceWD-rr14LM5jzQQbukBf_Rt1QbyNiOuTnuhfyO47QXHYXSu5jVL_lY5P34OQibzZRpUA0rVcG0gBbrREU8QgoCfpUBqVRpINaJ9udhdQyAvc7iAtnKlb5zKC4-D08EA_SSyK5MOjb1wt9Irt7x2Q)
+- [Light](https://blogger.googleusercontent.com/img/a/AVvXsEiVHCq1gi-PQWgRlKAqYWzmj2u_dslUTRsiIkre_WPndzh64RCbt9eF3kI18HaGEauJUgYCjwka9uaTRGfLkiKYVc5Jsth9IgjWM8eR2lo5gAsnH6Krq2CyS8YTrCPzFYXl0NwWlt6fSP6OE9Q-bjzJlwUcbWajmEA24BQeSV_xioNxxZNP_pAleoQhNTU)
+
 - For more details and examples, see:
 - [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
 
@@ -119,7 +121,7 @@ SearchFieldAutoComplete<String>(
 - The decoration for the suggestion list, including properties like [BoxShadow].
 
 ### `suggestionItemBuilder`
-- A custom builder for individual suggestion items. This property allows you to provide a function that builds and customizes the decoration of each suggestion item in the list.
+-This property allows you to provide a function that builds and customizes widget of each suggestion item in the list. The function provides two parameters.
 
 ### `onSuggestionSelected`
 - A callback function when a suggestion is tapped.
@@ -144,7 +146,6 @@ SearchFieldAutoComplete<String>(
 
 ### `scrollbarProperties`
 - Represents optional properties for a scrollbar.
-
 
 ## Example
 For a more detailed example of how to use this package, check out the [example](examples) directory in this repository.

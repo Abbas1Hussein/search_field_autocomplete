@@ -16,11 +16,11 @@ class DefaultEmptySuggestionsWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DefaultEmptySuggestionsWidgetState createState() => _DefaultEmptySuggestionsWidgetState();
+  _DefaultEmptySuggestionsWidgetState createState() =>
+      _DefaultEmptySuggestionsWidgetState();
 }
 
-class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsWidget>
-    with SingleTickerProviderStateMixin {
+class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsWidget> with SingleTickerProviderStateMixin {
   static const _edgeInsets = EdgeInsets.all(8.0);
 
   late AnimationController _controller;
@@ -28,15 +28,17 @@ class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsW
 
   @override
   void initState() {
+    super.initState();
     _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
 
     // Create a Tween for the opacity property
-    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _animation = Tween<double>(begin: -1, end: 1.0).animate(_controller);
 
     // Start the animation when the widget is built
     _controller.fling();
-    super.initState();
   }
 
   @override
@@ -48,6 +50,7 @@ class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsW
       builder: (context, _) {
         return SizeTransition(
           sizeFactor: _animation,
+          axisAlignment: 10.0,
           child: Container(
             margin: _edgeInsets,
             padding: _edgeInsets,
@@ -62,6 +65,10 @@ class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsW
               borderRadius: BorderRadius.circular(_edgeInsets.horizontal),
             ),
             child: Material(
+              shadowColor: Colors.transparent,
+              elevation: 0.0,
+              borderRadius: BorderRadius.zero,
+              type: MaterialType.transparency,
               color: Colors.transparent,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

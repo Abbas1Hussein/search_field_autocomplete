@@ -107,7 +107,7 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
 
   /// A custom builder for individual suggestion items.
   ///
-  /// This property allows you to provide a function that builds and customizes the decoration
+  /// This property allows you to provide a function that builds and customizes widget
   /// of each suggestion item in the list. The function provides two parameters:
   ///
   /// - `searchFieldItem`: The [SearchFieldAutoCompleteItem<T>] representing the suggestion item.
@@ -395,7 +395,9 @@ class _SearchFieldAutoCompleteState<T>
         if (snapshot.data == null || !isSuggestionExpanded) {
           return const SizedBox();
         } else if (snapshot.data!.isEmpty) {
-          final emptySuggestionsWidget = DefaultEmptySuggestionsWidget(searchController?.text ?? '', isIOS: _isIOS);
+          final emptySuggestionsWidget = DefaultEmptySuggestionsWidget(
+              searchController?.text ?? '',
+              isIOS: _isIOS);
           if (widget.emptyBuilder != null) {
             return widget.emptyBuilder!(searchController?.text ?? '') ??
                 emptySuggestionsWidget;
@@ -491,12 +493,6 @@ class _SearchFieldAutoCompleteState<T>
   }
 
   void _onSuggestionSelected(SearchFieldAutoCompleteItem<T> searchFieldItem) {
-    widget.onSuggestionSelected?.call(searchFieldItem);
-
-    // Hide the suggestion on stream.
-    suggestionStream.sink.add(null);
-    isSuggestionExpanded = false;
-
     // Set the search controller's text to the selected search key and place the cursor at the end.
     searchController!.text = searchFieldItem.searchKey;
     searchController!.selection = TextSelection.fromPosition(
@@ -512,12 +508,18 @@ class _SearchFieldAutoCompleteState<T>
       }
     }
 
+    // Hide the suggestion on stream.
+    suggestionStream.sink.add(null);
+    isSuggestionExpanded = false;
+
     // Delay showing the suggestion again to provide a smoother user experience
     // and address a specific issue.
     Future.delayed(
-      const Duration(milliseconds: 100),
+      const Duration(milliseconds: 300),
       () => isSuggestionExpanded = true,
     );
+
+    widget.onSuggestionSelected?.call(searchFieldItem);
   }
 
   @override

@@ -49,6 +49,9 @@ class SuggestionWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       shadowColor: Colors.transparent,
+      elevation: 0.0,
+      borderRadius: BorderRadius.zero,
+      type: MaterialType.transparency,
       color: Colors.transparent,
       child: ScrollConfiguration(
         behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
@@ -64,7 +67,7 @@ class SuggestionWidget<T> extends StatelessWidget {
             final SearchFieldAutoCompleteItem<T> searchFieldItem =
                 data![index]!;
             return InkWell(
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(16.0),
               splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
               mouseCursor: SystemMouseCursors.click,
               onTap: () => onSuggestionSelected(searchFieldItem),

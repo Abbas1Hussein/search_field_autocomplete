@@ -13,11 +13,11 @@ extension ListContainsObject<T> on List {
 }
 
 /// A list of [BoxShadow] objects representing elevation effects.
-final List<BoxShadow> elevations = [
+const List<BoxShadow> elevations = [
   BoxShadow(
-    color: Colors.black.withOpacity(0.8),
+    color: Colors.black,
     spreadRadius: 0.1,
     blurRadius: 0.1,
-    offset: const Offset(0, 0),
+    offset: Offset(0, 0),
   ),
 ];
