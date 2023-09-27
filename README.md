@@ -2,7 +2,6 @@
 
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
-
 <div>
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/746de5d6-8084-4565-bc8b-3cf71a73ae67" width="45%" />
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/4f4ba0b7-2bb4-49f5-91c5-7221e1902928" width="45%" />
@@ -43,7 +42,7 @@ SearchFieldAutoComplete<String>(
 
 ```
 - For more details and examples, see:
-- [Example 1](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_1.dart)
+- [Example 1](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/example/lib/example_1.dart)
 
 ## Important Parameters
 
@@ -69,7 +68,7 @@ SearchFieldAutoComplete<String>(
    )
    ```
 - For more details and examples, see:
-- [Example 3](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_3.dart)
+- [Example 3](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/example/lib/example_3.dart)
 
 ### `itemHeight`
 - The height of each suggestion item in the list.
@@ -97,7 +96,7 @@ SearchFieldAutoComplete<String>(
 - Messages `noResultFound` and `try Different Search term` will be displayed in different languages based on the user's locale.
 
 - For more details and examples, see:
-- [Example 2](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
+- [Example 2](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/example/lib/example_2.dart)
 
 ### `autoCorrect`
 - Controls whether to enable auto-correction, defaults to `true`.
