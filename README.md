@@ -42,7 +42,7 @@ SearchFieldAutoComplete<String>(
 
 ```
 - For more details and examples, see:
-- [Example 1](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/example/lib/example_1.dart)
+- [Example 1](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/example/lib/search_field_autocomplete_example.dart)
 
 ## Important Parameters
 
