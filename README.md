@@ -1,14 +1,9 @@
-[![pub package](https://img.shields.io/pub/v/search_field_autocomplete.svg)](https://pub.dartlang.org/packages/search_field_autocomplete)
-
-[![GitHub](https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE)
-
-[![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers)
-
-[![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
+[![pub package](https://img.shields.io/pub/v/search_field_autocomplete.svg)](https://pub.dartlang.org/packages/search_field_autocomplete) [![GitHub](https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
 
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
-<div align="center">
+
+<div>
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/746de5d6-8084-4565-bc8b-3cf71a73ae67" width="45%" />
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/4f4ba0b7-2bb4-49f5-91c5-7221e1902928" width="45%" />
 </div>
@@ -63,7 +58,7 @@ SearchFieldAutoComplete<String>(
 - [value]: A string representing the user's input.
 - [suggestions]: A list of [SearchFieldAutoCompleteItem<T>] representing the search suggestions. The function should return a sorted list of suggestions based on the provided [value].
 - The function should return a sorted list of suggestions based on the provided [value].
-     
+
    ```dart
      SearchFieldAutoComplete<T>(
      sorter: (query, suggestions) {
@@ -75,7 +70,7 @@ SearchFieldAutoComplete<String>(
    ```
 - For more details and examples, see:
 - [Example 3](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_3.dart)
-  
+
 ### `itemHeight`
 - The height of each suggestion item in the list.
 
