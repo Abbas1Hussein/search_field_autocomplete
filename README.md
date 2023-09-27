@@ -1,10 +1,10 @@
-[//]: # ([![pub package]&#40;https://img.shields.io/pub/v/search_field_autocomplete.svg&#41;]&#40;https://pub.dartlang.org/packages/search_field_autocomplete&#41;)
+[![pub package](https://img.shields.io/pub/v/search_field_autocomplete.svg)](https://pub.dartlang.org/packages/search_field_autocomplete)
 
-[//]: # ([![GitHub]&#40;https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete&#41;]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE&#41;)
+[![GitHub](https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE)
 
-[//]: # ([![GitHub stars]&#40;https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete&#41;]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers&#41;)
+[![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers)
 
-[//]: # ([![GitHub forks]&#40;https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete&#41;]&#40;https://github.com/Abbas1Hussein/search_field_autocomplete/network&#41;)
+[![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
 
 `search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
