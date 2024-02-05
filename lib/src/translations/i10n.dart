@@ -1,4 +1,4 @@
-Map<String, Map<String, String>> translations = {
+const Map<String, Map<String, String>> translations = {
   'en': {
     // English
     'noResultsFound': 'No Results Found',

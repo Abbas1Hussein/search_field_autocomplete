@@ -1,5 +1,6 @@
 name: example
 version: 1.0.0+1
+publish_to: none
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -10,7 +11,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   search_field_autocomplete:
-    path: D:\flutter_repo\packages\flutter/search_field_autocomplete
+    path: ../
 
 
 dev_dependencies:

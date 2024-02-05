@@ -24,7 +24,7 @@ class SuggestionWidget<T> extends StatelessWidget {
   final SuggestionItemBuilder<T>? suggestionItemBuilder;
 
   /// Check if the platform is iOS.
-  final bool isIos;
+  final bool isIOS;
 
   final SuggestionSelected<T> onSuggestionSelected;
 
@@ -37,7 +37,7 @@ class SuggestionWidget<T> extends StatelessWidget {
     required this.suggestionDirection,
     required this.itemHeight,
     required this.data,
-    required this.isIos,
+    required this.isIOS,
     this.suggestionStyle,
   })  : assert(
           !(suggestionItemBuilder != null && suggestionStyle != null),
@@ -93,7 +93,7 @@ class SuggestionWidget<T> extends StatelessWidget {
   }
 
   TextStyle? _defaultSuggestionStyle(BuildContext context) {
-    if (isIos) {
+    if (isIOS) {
       final cupertinoTheme = CupertinoTheme.of(context);
       return cupertinoTheme.textTheme.textStyle;
     } else {
