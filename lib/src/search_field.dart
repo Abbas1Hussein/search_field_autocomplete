@@ -14,7 +14,6 @@ const _kItemHeight = 40.0;
 const _kMaxSuggestionsInViewPort = 5;
 const _kEdgeInsets = EdgeInsets.all(8.0);
 
-/// A widget that displays a search field with autocomplete suggestions.
 class SearchFieldAutoComplete<T> extends StatefulWidget {
   SearchFieldAutoComplete({
     super.key,
@@ -22,9 +21,11 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
     this.autoCorrect = true,
     this.controller,
     this.emptyBuilder,
-    this.enabled,
+    this.enabled = true,
+    this.autofocus = false,
     this.focusNode,
     this.placeholder,
+    this.placeholderStyle,
     this.initialValue,
     this.inputType,
     this.itemHeight = _kItemHeight,
@@ -38,7 +39,6 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
     this.searchStyle,
     this.sorter,
     this.prefixIcon,
-    Appearance? appearance,
     this.suggestionAction,
     this.suggestionDirection = SuggestionDirection.down,
     this.suggestionItemBuilder,
@@ -46,12 +46,19 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
     this.suggestionStyle,
     this.suggestionsDecoration,
     this.suffixIcon,
-  })  : _appearance = appearance ?? (_isIOS ? Appearance.cupertino : Appearance.material),
+    Appearance? appearance,
+  })  : _appearance =
+            appearance ?? (_isIOS ? Appearance.cupertino : Appearance.material),
         assert(
             (initialValue != null &&
                     suggestions.containsObject(initialValue)) ||
                 initialValue == null,
             'Initial value should either be null or should be present in suggestions list.');
+
+  /// The initial value to be selected for the SearchFieldAutoComplete.
+  ///
+  /// It must be present in [suggestions].
+  final SearchFieldAutoCompleteItem<T>? initialValue;
 
   /// A list of suggestions for the SearchFieldAutoComplete.
   /// Each suggestion should have a unique searchKey.
@@ -99,20 +106,13 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   final Offset? offset;
 
   /// The widget to display when the search returns empty results.
-  /// when retrieve 'null' will display --> [DefaultEmptySuggestionsWidget].
-  ///
-  /// For more details and examples, see:
-  /// [GitHub Repository](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/examples/lib/example_2.dart)
   final Widget? Function(String value)? emptyBuilder;
 
-  /// The [FocusNode] for managing the focus of the search field.
-  final FocusNode? focusNode;
-
-  /// Controls whether to enable auto-correction, defaults to `true`.
-  final bool autoCorrect;
-
-  /// The direction in which suggestions appear, defaults to [SuggestionDirection.down].
-  final SuggestionDirection suggestionDirection;
+  /// Disables the search field when false.
+  ///
+  /// Text fields in disabled states have a light grey background and don't
+  /// respond to touch events including the [prefixIcon] and [suffixIcon] button.
+  final bool enabled;
 
   /// An optional suffix icon to be displayed on the right side.
   ///
@@ -140,7 +140,10 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// The action to perform when a suggestion is tapped.
   final SuggestionAction? suggestionAction;
 
-  /// The decoration for the suggestion list, including properties like [BoxShadow].
+  /// The direction in which suggestions appear, defaults to [SuggestionDirection.down].
+  final SuggestionDirection suggestionDirection;
+
+  /// The decoration for the suggestion list.
   final SuggestionDecoration? suggestionsDecoration;
 
   /// A custom builder for individual suggestion items.
@@ -155,9 +158,6 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// A callback function when a suggestion is tapped.
   final SuggestionSelected<T>? onSuggestionSelected;
 
-  /// A flag to enable or disable the SearchFieldAutoComplete.
-  final bool? enabled;
-
   /// A callback function when the SearchFieldAutoComplete is [submitted].
   final ValueChanged<String?>? onSubmitted;
 
@@ -167,33 +167,38 @@ class SearchFieldAutoComplete<T> extends StatefulWidget {
   /// A callback function when the SearchFieldAutoComplete is [Tap].
   final VoidCallback? onTap;
 
+  /// The hint text displayed in the search field.
+  final String? placeholder;
+
+  /// The hint text displayed in the search field.
+  final TextStyle? placeholderStyle;
+
+  /// Represents optional properties for a scrollbar.
+  final ScrollbarProperties? scrollbarProperties;
+
+  /// {@macro flutter.widgets.editableText.autofocus}
+  final bool autofocus;
+
+  /// {@macro flutter.widgets.editableText.autocorrect}
+  final bool autoCorrect;
+
+  /// {@macro flutter.widgets.Focus.focusNode}
+  final FocusNode? focusNode;
+
   /// The appearance style for the search field and suggestions.
   ///
   /// Determines whether to use Cupertino or Material design.
   final Appearance _appearance;
 
-  /// The hint text displayed in the search field.
-  final String? placeholder;
-
-  /// The initial value to be selected for the SearchFieldAutoComplete.
-  /// It must be present in [suggestions].
-  final SearchFieldAutoCompleteItem<T>? initialValue;
-
-  /// Represents optional properties for a scrollbar.
-  final ScrollbarProperties? scrollbarProperties;
-
   @override
-  _SearchFieldAutoCompleteState<T> createState() =>
-      _SearchFieldAutoCompleteState<T>();
+  _SearchFieldAutoCompleteState<T> createState() => _SearchFieldAutoCompleteState<T>();
 }
 
-class _SearchFieldAutoCompleteState<T>
-    extends State<SearchFieldAutoComplete<T>> {
+class _SearchFieldAutoCompleteState<T> extends State<SearchFieldAutoComplete<T>> {
   /// A stream controller for managing suggestion updates.
   final StreamController<List<SearchFieldAutoCompleteItem<T>?>?>
       suggestionStream =
       StreamController<List<SearchFieldAutoCompleteItem<T>?>?>.broadcast();
-
 
   /// The focus node for the search field.
   FocusNode? _focus;
@@ -225,8 +230,7 @@ class _SearchFieldAutoCompleteState<T>
   /// ScrollController is used to control the scroll position of a scrollable widget.
   final ScrollController _scrollController = ScrollController();
 
-  late bool isIOS = widget._appearance == Appearance.cupertino;
-
+  late final bool _isIOSPlatform = widget._appearance == Appearance.cupertino;
 
   @override
   void initState() {
@@ -407,7 +411,7 @@ class _SearchFieldAutoCompleteState<T>
         } else if (snapshot.data!.isEmpty) {
           final emptySuggestionsWidget = DefaultEmptySuggestionsWidget(
             searchController?.text ?? '',
-            isIOS: isIOS,
+            isIOS: _isIOSPlatform,
           );
           if (widget.emptyBuilder != null) {
             return widget.emptyBuilder!(searchController?.text ?? '') ??
@@ -429,7 +433,7 @@ class _SearchFieldAutoCompleteState<T>
           final SuggestionWidget<T> suggestionWidget = SuggestionWidget(
             itemHeight: widget.itemHeight,
             data: snapshot.data,
-            isIOS: isIOS,
+            isIOS: _isIOSPlatform,
             suggestionItemBuilder: widget.suggestionItemBuilder,
             scrollController: _scrollController,
             suggestionStyle: widget.suggestionStyle,
@@ -443,27 +447,19 @@ class _SearchFieldAutoCompleteState<T>
                 : const Duration(milliseconds: 100),
             height: _totalHeight,
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
-            margin: widget.suggestionsDecoration?.padding ?? _kEdgeInsets,
-            decoration: widget.suggestionsDecoration?.boxDecoration ??
-                _defaultSuggestionDecoration,
+            padding: widget.suggestionsDecoration?.paddingSuggestions ?? const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
+            margin: widget.suggestionsDecoration?.marginSuggestions ?? _kEdgeInsets,
+            decoration: widget.suggestionsDecoration ?? _defaultSuggestionDecoration,
             child: TextFieldTapRegion(
               child: Builder(builder: (context) {
-                if (isIOS) {
+                if (_isIOSPlatform) {
                   return CupertinoScrollbar(
-                    thumbVisibility:
-                        widget.scrollbarProperties?.scrollbarAlwaysVisible,
+                    thumbVisibility: widget.scrollbarProperties?.scrollbarAlwaysVisible,
                     controller: _scrollController,
-                    thickness: widget.scrollbarProperties?.scrollbarDecoration
-                            ?.thickness ??
-                        CupertinoScrollbar.defaultThickness,
-                    scrollbarOrientation:
-                        widget.scrollbarProperties?.scrollbarOrientation,
-                    notificationPredicate:
-                        widget.scrollbarProperties?.notificationPredicate,
-                    radius: widget
-                            .scrollbarProperties?.scrollbarDecoration?.radius ??
-                        CupertinoScrollbar.defaultRadius,
+                    thickness: widget.scrollbarProperties?.scrollbarDecoration?.thickness ?? CupertinoScrollbar.defaultThickness,
+                    scrollbarOrientation: widget.scrollbarProperties?.scrollbarOrientation,
+                    notificationPredicate: widget.scrollbarProperties?.notificationPredicate,
+                    radius: widget.scrollbarProperties?.scrollbarDecoration?.radius ?? CupertinoScrollbar.defaultRadius,
                     child: suggestionWidget,
                   );
                 }
@@ -495,7 +491,7 @@ class _SearchFieldAutoCompleteState<T>
     final boxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(_kEdgeInsets.horizontal),
     );
-    if (_isIOS) {
+    if (_isIOSPlatform) {
       return boxDecoration.copyWith(color: CupertinoColors.tertiarySystemFill);
     } else {
       final color = Theme.of(context).cardColor;
@@ -539,21 +535,21 @@ class _SearchFieldAutoCompleteState<T>
       link: _layerLink,
       child: Builder(
         builder: (context) {
-          if (isIOS) {
+          if (_isIOSPlatform) {
             return CupertinoSearchTextField(
               key: key,
-              onSubmitted: widget.onSubmitted,
-              enabled: widget.enabled,
-              autocorrect: widget.autoCorrect,
-              controller: widget.controller ?? searchController,
+              autofocus: widget.autofocus,
               focusNode: _focus,
+              enabled: widget.enabled,
               style: widget.searchStyle,
               keyboardType: widget.inputType,
+              onSubmitted: widget.onSubmitted,
+              autocorrect: widget.autoCorrect,
               placeholder: widget.placeholder,
-              prefixIcon:
-                  widget.prefixIcon ?? const Icon(CupertinoIcons.search),
-              suffixIcon: widget.suffixIcon ??
-                  const Icon(CupertinoIcons.xmark_circle_fill),
+              placeholderStyle: widget.placeholderStyle,
+              controller: widget.controller ?? searchController,
+              prefixIcon: widget.prefixIcon ?? const Icon(CupertinoIcons.search),
+              suffixIcon: widget.suffixIcon ??const Icon(CupertinoIcons.xmark_circle_fill),
               onChanged: _onChangeField,
               onTap: _onTapField,
             );
@@ -562,6 +558,7 @@ class _SearchFieldAutoCompleteState<T>
               key: key,
               maxLines: 1,
               focusNode: _focus,
+              autofocus: widget.autofocus,
               enabled: widget.enabled,
               autocorrect: widget.autoCorrect,
               onSubmitted: widget.onSubmitted,
@@ -570,8 +567,8 @@ class _SearchFieldAutoCompleteState<T>
               keyboardType: widget.inputType,
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
-                hintText: widget.placeholder ??
-                    MaterialLocalizations.of(context).searchFieldLabel,
+                hintText: widget.placeholder ?? MaterialLocalizations.of(context).searchFieldLabel,
+                hintStyle: widget.placeholderStyle,
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey),
                   borderRadius: BorderRadius.circular(32.0),
@@ -600,8 +597,7 @@ class _SearchFieldAutoCompleteState<T>
                     }
                   },
                 ),
-                prefixIcon: widget.prefixIcon ??
-                    const Icon(Icons.search, color: Colors.grey),
+                prefixIcon: widget.prefixIcon ?? const Icon(Icons.search, color: Colors.grey),
               ),
               onChanged: _onChangeField,
               onTap: _onTapField,

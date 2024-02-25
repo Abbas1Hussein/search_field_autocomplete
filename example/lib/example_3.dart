@@ -1,12 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: ThemeData.light(useMaterial3: true),
-      themeMode: ThemeMode.light,
-      home: const Example3(),
+    const CupertinoApp(
+      theme: CupertinoThemeData(
+        brightness: Brightness.light
+      ),
+      localizationsDelegates: [
+        DefaultMaterialLocalizations.delegate,
+        DefaultWidgetsLocalizations.delegate,
+      ],
+      home: Example3(),
     ),
   );
 }
@@ -16,19 +22,20 @@ class Example3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('SearchField AutoComplete Example3')),
-      body: Center(
+    return CupertinoPageScaffold(
+     // appBar: AppBar(title: const Text('SearchField AutoComplete Example3')),
+      child:  Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SearchFieldAutoComplete<String>(
+            appearance: Appearance.cupertino,
             suggestions: List.generate(
               26, // 26 letters in the alphabet
               (index) {
                 final letter = String.fromCharCode('A'.codeUnitAt(0) + index);
                 return SearchFieldAutoCompleteItem(
-                  letter,
-                  item: 'item $letter',
+                  searchKey: letter,
+                  value: 'value $letter',
                 );
               },
             ),

@@ -1,32 +1,28 @@
 import 'package:flutter/widgets.dart';
 
 class SearchFieldAutoCompleteItem<T> {
-  Key? key;
-
-  /// the text based on which the search happens
+  const SearchFieldAutoCompleteItem({
+    this.child,
+    this.value,
+    required this.searchKey,
+  });
+  /// The string to search for.
   final String searchKey;
 
-  /// Custom Object to be associated with each ListItem
-  /// see example in [example/lib/country_search.dart](https://github.com/maheshmnj/searchfield/tree/master/example/lib/country_search.dart)
-  final T? item;
+  /// The value of the search item. This can be any type of object.
+  final T? value;
 
-  /// The widget to be shown in the searchField
-  /// if not specified, Text widget with default styling will be used
+  /// The widget to display in the search results overlay. If not specified, a
+  /// [Text] widget with the default styling will appear instead.
   final Widget? child;
 
-  /// The widget to be shown in the suggestion list
-  /// if not specified, Text widget with default styling will be used
-  /// to show a custom widget, use [child] instead
-  /// see example in [example/lib/country_search.dart]()
-  SearchFieldAutoCompleteItem(this.searchKey,
-      {this.item, this.child, this.key});
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         other is SearchFieldAutoCompleteItem &&
             runtimeType == other.runtimeType &&
-            searchKey == other.searchKey;
+            searchKey == other.searchKey && child == other.child && value == other.value;
   }
 
   @override

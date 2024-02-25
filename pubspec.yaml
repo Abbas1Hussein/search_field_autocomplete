@@ -1,6 +1,6 @@
 name: search_field_autocomplete
 description:  search field with autocomplete suggestions.
-version: 0.0.4
+version: 1.0.0
 homepage: https://github.com/Abbas1Hussein/search_field_autocomplete
 
 environment:

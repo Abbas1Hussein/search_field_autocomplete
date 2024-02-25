@@ -9,22 +9,22 @@ class Example1 extends StatelessWidget {
   const Example1({super.key});
 
   List<SearchFieldAutoCompleteItem<String>> get suggestions {
-    return [
-      SearchFieldAutoCompleteItem<String>('Apple', item: 'apple'),
-      SearchFieldAutoCompleteItem<String>('Banana', item: 'banana'),
-      SearchFieldAutoCompleteItem<String>('Cherry', item: 'cherry'),
-      SearchFieldAutoCompleteItem<String>('Date', item: 'date'),
-      SearchFieldAutoCompleteItem<String>('Fig', item: 'fig'),
-      SearchFieldAutoCompleteItem<String>('Grapes', item: 'grapes'),
-      SearchFieldAutoCompleteItem<String>('Kiwi', item: 'kiwi'),
-      SearchFieldAutoCompleteItem<String>('Lemon', item: 'lemon'),
-      SearchFieldAutoCompleteItem<String>('Mango', item: 'mango'),
-      SearchFieldAutoCompleteItem<String>('Orange', item: 'orange'),
-      SearchFieldAutoCompleteItem<String>('Peach', item: 'peach'),
-      SearchFieldAutoCompleteItem<String>('Pear', item: 'pear'),
-      SearchFieldAutoCompleteItem<String>('Pineapple', item: 'pineapple'),
-      SearchFieldAutoCompleteItem<String>('Strawberry', item: 'strawberry'),
-      SearchFieldAutoCompleteItem<String>('Watermelon', item: 'watermelon'),
+    return const [
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Apple', value: 'apple', child: Text('1')),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Banana', value: 'banana'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Cherry', value: 'cherry'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Date', value: 'date'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Fig', value: 'fig'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Grapes', value: 'grapes'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Kiwi', value: 'kiwi'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Lemon', value: 'lemon'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Mango', value: 'mango'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Orange', value: 'orange'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Peach', value: 'peach'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Pear', value: 'pear'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Pineapple', value: 'pineapple'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Strawberry', value: 'strawberry'),
+      SearchFieldAutoCompleteItem<String>(searchKey: 'Watermelon', value: 'watermelon'),
     ];
   }
 
@@ -42,7 +42,7 @@ class Example1 extends StatelessWidget {
               placeholder: 'Search fruits',
               suggestions: suggestions,
               suggestionsDecoration: SuggestionDecoration(
-                padding: const EdgeInsets.all(8.0),
+                marginSuggestions: const EdgeInsets.all(8.0),
                 color: Colors.greenAccent,
                 borderRadius: BorderRadius.circular(16.0),
               ),

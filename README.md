@@ -1,6 +1,6 @@
 [![pub package](https://img.shields.io/pub/v/search_field_autocomplete.svg)](https://pub.dartlang.org/packages/search_field_autocomplete) [![GitHub](https://img.shields.io/github/license/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/blob/main/LICENSE) [![GitHub stars](https://img.shields.io/github/stars/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Abbas1Hussein/search_field_autocomplete)](https://github.com/Abbas1Hussein/search_field_autocomplete/network)
 
-`search_field_autocomplete` is a Flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
+a flutter package that provides a customizable search field with autocomplete suggestions. It is designed to make it easy to implement autocomplete functionality in your Flutter applications.
 
 <div>
   <img src="https://github.com/Abbas1Hussein/search_field_autocomplete/assets/112737126/746de5d6-8084-4565-bc8b-3cf71a73ae67" width="45%" />
@@ -10,12 +10,8 @@
 ## Features
 
 - Display autocomplete suggestions as the user types.
-- Customize the appearance of the suggestion list.
-- Control the number of suggestions displayed in the viewport.
 - Support for iOS-style search fields (Cupertino) and Material Design search fields.
 - Customize sorting and filtering of suggestions.
-- Optional scrollbar for long suggestion lists.
-- Callbacks for handling user interactions with suggestions.
 - Highly customizable with various styling options.
 
 ## Usage
@@ -27,17 +23,19 @@ import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 
 ```dart
 SearchFieldAutoComplete<String>(
-      suggestions: [
-        SearchFieldAutoCompleteItem<String>('Apple', item: 'apple'),
-        SearchFieldAutoCompleteItem<String>('Banana', item: 'banana'),
-        SearchFieldAutoCompleteItem<String>('Cherry', item: 'cherry'),
-        SearchFieldAutoCompleteItem<String>('Date', item: 'date'),
-        SearchFieldAutoCompleteItem<String>('Fig', item: 'fig'),
-      ],
-      onSuggestionSelected: (value) {
-        // Handle the selected suggestion
-        print('Selected: $value');
-      },
+  suggestions: [
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Apple', value: 'apple'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Banana', value: 'banana'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Cherry', value: 'cherry'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Date', value: 'date'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Fig', value: 'fig'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Grapes', value: 'grapes'),
+    SearchFieldAutoCompleteItem<String>(searchKey: 'Kiwi', value: 'kiwi'),
+  ],
+  onSuggestionSelected: (value) {
+    // Handle the selected suggestion
+    print('Selected: $value');
+  },
 );
 
 ```

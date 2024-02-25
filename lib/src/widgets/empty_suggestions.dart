@@ -5,22 +5,20 @@ import '../common/extensions.dart';
 import '../translations/translation_service.dart';
 
 class DefaultEmptySuggestionsWidget extends StatefulWidget {
+  const DefaultEmptySuggestionsWidget(this.value,
+      {super.key, required this.isIOS});
+
   final bool isIOS;
-
   final String value;
-
-  const DefaultEmptySuggestionsWidget(
-    this.value, {
-    Key? key,
-    required this.isIOS,
-  }) : super(key: key);
 
   @override
   _DefaultEmptySuggestionsWidgetState createState() =>
       _DefaultEmptySuggestionsWidgetState();
 }
 
-class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsWidget> with SingleTickerProviderStateMixin {
+class _DefaultEmptySuggestionsWidgetState
+    extends State<DefaultEmptySuggestionsWidget>
+    with SingleTickerProviderStateMixin {
   static const _edgeInsets = EdgeInsets.all(8.0);
 
   late AnimationController _controller;
@@ -34,10 +32,8 @@ class _DefaultEmptySuggestionsWidgetState extends State<DefaultEmptySuggestionsW
       duration: const Duration(milliseconds: 200),
     );
 
-    // Create a Tween for the opacity property
     _animation = Tween<double>(begin: -1, end: 1.0).animate(_controller);
 
-    // Start the animation when the widget is built
     _controller.fling();
   }
 

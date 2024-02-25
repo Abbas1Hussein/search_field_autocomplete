@@ -5,11 +5,26 @@ import '../../search_field_autocomplete.dart';
 
 /// A widget for displaying a list of suggestions.
 class SuggestionWidget<T> extends StatelessWidget {
-  /// The style for suggestion items.
-  final TextStyle? suggestionStyle;
+  const SuggestionWidget({
+    super.key,
+    this.scrollController,
+    this.suggestionItemBuilder,
+    required this.onSuggestionSelected,
+    required this.suggestionDirection,
+    required this.itemHeight,
+    required this.data,
+    required this.isIOS,
+    this.suggestionStyle,
+  });
+
+  /// Check if the platform is iOS.
+  final bool isIOS;
 
   /// The height of each suggestion item.
   final double itemHeight;
+
+  /// The style for suggestion items.
+  final TextStyle? suggestionStyle;
 
   /// The List<SearchFieldAutoCompleteItem> of the suggestion data.
   final List<SearchFieldAutoCompleteItem<T>?>? data;
@@ -23,33 +38,13 @@ class SuggestionWidget<T> extends StatelessWidget {
   /// A builder for customizing the appearance of suggestion items.
   final SuggestionItemBuilder<T>? suggestionItemBuilder;
 
-  /// Check if the platform is iOS.
-  final bool isIOS;
-
   final SuggestionSelected<T> onSuggestionSelected;
-
-  /// Constructor for the SuggestionWidget.
-  const SuggestionWidget({
-    Key? key,
-    this.scrollController,
-    this.suggestionItemBuilder,
-    required this.onSuggestionSelected,
-    required this.suggestionDirection,
-    required this.itemHeight,
-    required this.data,
-    required this.isIOS,
-    this.suggestionStyle,
-  })  : assert(
-          !(suggestionItemBuilder != null && suggestionStyle != null),
-          'You cannot use both suggestionItemBuilder and suggestionStyle at the same time.',
-        ),
-        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      shadowColor: Colors.transparent,
       elevation: 0.0,
+      shadowColor: Colors.transparent,
       borderRadius: BorderRadius.zero,
       type: MaterialType.transparency,
       color: Colors.transparent,
@@ -71,20 +66,28 @@ class SuggestionWidget<T> extends StatelessWidget {
               splashFactory: InkSparkle.constantTurbulenceSeedSplashFactory,
               mouseCursor: SystemMouseCursors.click,
               onTap: () => onSuggestionSelected(searchFieldItem),
-              child: suggestionItemBuilder != null
-                  ? suggestionItemBuilder!(context, searchFieldItem)
-                  : Container(
+              child: Builder(
+                builder: (context) {
+                  if (suggestionItemBuilder != null) {
+                    return DefaultTextStyle.merge(
+                      style: suggestionStyle,
+                      child: suggestionItemBuilder!(context, searchFieldItem),
+                    );
+                  } else {
+                    return Container(
                       height: itemHeight,
                       width: double.infinity,
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.all(8.0),
                       child: searchFieldItem.child ??
-                          Text(
-                            searchFieldItem.searchKey,
-                            style: suggestionStyle ??
-                                _defaultSuggestionStyle(context),
+                          DefaultTextStyle.merge(
+                            style: suggestionStyle ?? _defaultSuggestionStyle(context),
+                            child: Text(searchFieldItem.searchKey),
                           ),
-                    ),
+                    );
+                  }
+                },
+              ),
             );
           },
         ),

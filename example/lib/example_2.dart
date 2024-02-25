@@ -3,7 +3,7 @@ import 'package:search_field_autocomplete/search_field_autocomplete.dart';
 
 void main() {
   runApp(
-     MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true),
       themeMode: ThemeMode.light,
@@ -53,8 +53,8 @@ class _Example2State extends State<Example2> {
                 placeholder: 'Search gamer tags',
                 suggestions: users.map((user) {
                   return SearchFieldAutoCompleteItem<User>(
-                    user.gamerTag,
-                    item: user,
+                    searchKey: user.gamerTag,
+                    value: user,
                   );
                 }).toList(),
                 emptyBuilder: (value) {
@@ -66,7 +66,7 @@ class _Example2State extends State<Example2> {
                   return const SizedBox.shrink();
                 },
                 onSuggestionSelected: (selectedItem) {
-                  final selectedUser = selectedItem.item!;
+                  final selectedUser = selectedItem.value!;
                   print("Selected Gamer Tag: ${selectedUser.gamerTag}");
                   print("User ID: ${selectedUser.id}");
                   setState(() {
@@ -109,9 +109,13 @@ class _Example2State extends State<Example2> {
 }
 
 class User {
-  final String gamerTag;
-  final int id;
-  final String imageUrl;
+  const User({
+    required this.id,
+    required this.gamerTag,
+    required this.imageUrl,
+  });
 
-  User({required this.gamerTag, required this.id, required this.imageUrl});
+  final int id;
+  final String gamerTag;
+  final String imageUrl;
 }
